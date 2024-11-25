@@ -1,0 +1,33 @@
+{
+  "name": "@chriscdn/format-date",
+  "version": "0.0.5",
+  "description": "Convert a number or string representation to a formatted date string.",
+  "repository": "https://github.com/chriscdn/format-date",
+  "author": "Christopher Meyer <chris@schwiiz.org>",
+  "license": "MIT",
+  "type": "module",
+  "source": "./src/index.ts",
+  "main": "./lib/format-date.cjs",
+  "module": "./lib/format-date.module.js",
+  "__unpkg": "./lib/format-date.umd.js",
+  "exports": {
+    "types": "./lib/index.d.ts",
+    "require": "./lib/format-date.cjs",
+    "default": "./lib/format-date.modern.js"
+  },
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./lib/ && microbundle --format modern,esm,cjs",
+    "dev": "microbundle watch",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@chriscdn/memoize": "^1.0.2",
+    "@chriscdn/to-date": "^1.0.7",
+    "get-user-locale": "^2.3.2"
+  },
+  "devDependencies": {
+    "microbundle": "^0.15.1",
+    "vitest": "^2.1.5"
+  }
+}
