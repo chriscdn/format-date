@@ -11,8 +11,6 @@ export const fetchPreset = (
     preset: FormatDatePreset,
     locale: string,
 ): Intl.DateTimeFormatOptions => {
-    const hour12 = ["en-US"].includes(locale);
-
     switch (preset) {
         case FormatDatePreset.None:
             return {};
@@ -26,7 +24,6 @@ export const fetchPreset = (
                 day: "numeric",
                 hour: "numeric",
                 minute: "numeric",
-                hour12,
             };
         case FormatDatePreset.DateTimeShort:
             // "11/25/24, 15:00"
@@ -34,7 +31,6 @@ export const fetchPreset = (
             return {
                 dateStyle: "short",
                 timeStyle: "short",
-                hour12,
             };
 
         case FormatDatePreset.Date:

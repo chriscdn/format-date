@@ -12,7 +12,7 @@ describe("Test Group 1", () => {
         epochUnit: EpochUnit.SECONDS,
       }),
     ).toBe(
-      "11/25/2024",
+      "25/11/2024",
     );
     expect(
       formatDate(1732565892000, {
@@ -20,20 +20,20 @@ describe("Test Group 1", () => {
         epochUnit: EpochUnit.BESTGUESS,
       }),
     ).toBe(
-      "11/25/2024",
+      "25/11/2024",
     );
 
     expect(formatDate(1732565892000000, { preset: FormatDatePreset.None }))
       .toBe(
-        "11/25/2024",
+        "25/11/2024",
       );
 
     expect(formatDate(sampleDate, { preset: FormatDatePreset.None })).toBe(
-      "11/25/2024",
+      "25/11/2024",
     );
 
     expect(formatDate(sampleDate, { preset: FormatDatePreset.DateTime })).toBe(
-      "November 25, 2024 at 15:00",
+      "25 November 2024 at 15:00",
     );
 
     expect(
@@ -53,7 +53,7 @@ describe("Test Group 1", () => {
 
     expect(formatDate(sampleDate, { preset: FormatDatePreset.DateTimeShort }))
       .toBe(
-        "11/25/24, 15:00",
+        "25/11/2024, 15:00",
       );
 
     expect(
@@ -71,16 +71,16 @@ describe("Test Group 1", () => {
 describe("Test Group 2", () => {
   test("Date Formatting", () => {
     expect(formatDate(sampleDate, { preset: FormatDatePreset.Date })).toBe(
-      "November 25, 2024",
+      "25 November 2024",
     );
 
     expect(formatDate(sampleDate, { preset: FormatDatePreset.DateMedium }))
       .toBe(
-        "Nov 25, 2024",
+        "25 Nov 2024",
       );
 
     expect(formatDate(sampleDate, { preset: FormatDatePreset.DateShort })).toBe(
-      "11/25/2024",
+      "25/11/2024",
     );
 
     expect(
@@ -89,7 +89,44 @@ describe("Test Group 2", () => {
         // formatOptions: { weekday: "long" },
       }),
     ).toBe(
-      "11/25/2024",
+      "25/11/2024",
     );
+  });
+});
+
+describe("12 Hours", () => {
+  test("12 Hours - en-US", () => {
+    expect(
+      formatDate(sampleDate, {
+        preset: FormatDatePreset.DateTime,
+        locale: "en-US",
+      }),
+    )
+      .toBe(
+        "November 25, 2024 at 3:00 PM",
+      );
+  });
+  test("12 Hours - en-CA", () => {
+    expect(
+      formatDate(sampleDate, {
+        preset: FormatDatePreset.DateTime,
+        locale: "en-CA",
+      }),
+    )
+      .toBe(
+        "November 25, 2024 at 3:00 p.m.",
+      );
+  });
+
+  test("12 Hours - de-CH", () => {
+    expect(
+      formatDate(sampleDate, {
+        preset: FormatDatePreset.DateTime,
+        locale: "de-CH",
+      }),
+    )
+      .toBe(
+        "25. November 2024 um 15:00",
+      );
   });
 });
