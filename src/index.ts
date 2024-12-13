@@ -69,4 +69,22 @@ const formatDate = Memoize(
     },
 );
 
-export { formatDate };
+const formatDateYYYYMMDD = Memoize((value: DateRepresentationNull) => {
+    const d = toDate(value);
+
+    if (d) {
+        const year = d.getFullYear();
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+
+        return [
+            year,
+            month.toString().padStart(2, "0"),
+            day.toString().padStart(2, "0"),
+        ].join("-");
+    } else {
+        return null;
+    }
+});
+
+export { formatDate, formatDateYYYYMMDD };

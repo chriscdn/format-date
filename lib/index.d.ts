@@ -10,4 +10,5 @@ export type FormatDateOptions = {
     epochUnit?: EpochUnit;
 };
 declare const formatDate: (value: DateRepresentationNull, options?: FormatDateOptions) => string;
-export { formatDate };
+declare const formatDateYYYYMMDD: (value: DateRepresentationNull) => string;
+export { formatDate, formatDateYYYYMMDD };
