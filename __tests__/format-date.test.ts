@@ -118,7 +118,7 @@ describe("12 Hours", () => {
       );
   });
 
-  test("12 Hours - de-CH", () => {
+  test("24 Hours - de-CH", () => {
     expect(
       formatDate(sampleDate, {
         preset: FormatDatePreset.DateTime,
