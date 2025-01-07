@@ -1,6 +1,6 @@
 {
   "name": "@chriscdn/format-date",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Convert a number or string representation to a formatted date string.",
   "repository": "https://github.com/chriscdn/format-date",
   "author": "Christopher Meyer <chris@schwiiz.org>",
