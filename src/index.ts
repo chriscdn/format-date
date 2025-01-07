@@ -57,7 +57,7 @@ const formatDate = Memoize(
             const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
             const formatOptions = options.formatOptions ?? {};
 
-            const intlFormatterOptions = fetchPreset(preset, locale);
+            const intlFormatterOptions = fetchPreset(preset);
 
             const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
                 ...intlFormatterOptions,
@@ -87,4 +87,33 @@ const formatDateYYYYMMDD = Memoize((value: DateRepresentationNull) => {
     }
 });
 
-export { formatDate, formatDateYYYYMMDD };
+const formatDateYYYYMMDDTHHMMSS = Memoize((value: DateRepresentationNull) => {
+    const d = toDate(value);
+
+    if (d) {
+        const year = d.getFullYear();
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+
+        const hours = d.getHours();
+        const minutes = d.getMinutes();
+        const seconds = d.getSeconds();
+
+        return [
+            [
+                year,
+                month.toString().padStart(2, "0"),
+                day.toString().padStart(2, "0"),
+            ].join("-"),
+            [
+                hours.toString().padStart(2, "0"),
+                minutes.toString().padStart(2, "0"),
+                seconds.toString().padStart(2, "0"),
+            ].join(":"),
+        ].join("T");
+    } else {
+        return null;
+    }
+});
+
+export { formatDate, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS };

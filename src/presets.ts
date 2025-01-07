@@ -9,7 +9,7 @@ export enum FormatDatePreset {
 
 export const fetchPreset = (
     preset: FormatDatePreset,
-    locale: string,
+    // locale: string,
 ): Intl.DateTimeFormatOptions => {
     switch (preset) {
         case FormatDatePreset.None:

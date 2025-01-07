@@ -11,4 +11,5 @@ export type FormatDateOptions = {
 };
 declare const formatDate: (value: DateRepresentationNull, options?: FormatDateOptions) => string;
 declare const formatDateYYYYMMDD: (value: DateRepresentationNull) => string;
-export { formatDate, formatDateYYYYMMDD };
+declare const formatDateYYYYMMDDTHHMMSS: (value: DateRepresentationNull) => string;
+export { formatDate, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS };

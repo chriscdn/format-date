@@ -6,4 +6,4 @@ export declare enum FormatDatePreset {
     DateMedium = 4,
     DateShort = 5
 }
-export declare const fetchPreset: (preset: FormatDatePreset, locale: string) => Intl.DateTimeFormatOptions;
+export declare const fetchPreset: (preset: FormatDatePreset) => Intl.DateTimeFormatOptions;

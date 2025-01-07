@@ -1,5 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { formatDate, FormatDatePreset, formatDateYYYYMMDD } from "../src";
+import {
+  formatDate,
+  FormatDatePreset,
+  formatDateYYYYMMDD,
+  formatDateYYYYMMDDTHHMMSS,
+} from "../src";
 import { EpochUnit, toDate } from "@chriscdn/to-date";
 
 const sampleDate = toDate("2024-11-25T15:00:00");
@@ -130,12 +135,21 @@ describe("12 Hours", () => {
       );
   });
 
-  test("YYYYMMDD", () => {
+  test("formatDateYYYYMMDD", () => {
     expect(
       formatDateYYYYMMDD("2024-11-25T01:00:00"),
     )
       .toBe(
         "2024-11-25",
+      );
+  });
+
+  test("formatDateYYYYMMDDTHHMMSS", () => {
+    expect(
+      formatDateYYYYMMDDTHHMMSS("2024-11-25T01:00:00"),
+    )
+      .toBe(
+        "2024-11-25T01:00:00",
       );
   });
 });
