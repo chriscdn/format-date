@@ -9,7 +9,26 @@ export type FormatDateOptions = {
     formatOptions?: Intl.DateTimeFormatOptions;
     epochUnit?: EpochUnit;
 };
-declare const formatDate: (value: DateRepresentationNull, options?: FormatDateOptions) => string;
-declare const formatDateYYYYMMDD: (value: DateRepresentationNull) => string;
-declare const formatDateYYYYMMDDTHHMMSS: (value: DateRepresentationNull) => string;
-export { formatDate, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS };
+export type FormatDateRelativeOptions = {
+    locale?: string;
+    formatOptions?: Intl.RelativeTimeFormatOptions;
+    unit?: Intl.RelativeTimeFormatUnit;
+    epochUnit?: EpochUnit;
+};
+declare const formatDate: {
+    (value: DateRepresentationNull, options?: FormatDateOptions): string;
+    cache: import("quick-lru").default<string, string>;
+};
+declare const formatDateYYYYMMDD: {
+    (value: DateRepresentationNull): string;
+    cache: import("quick-lru").default<string, string>;
+};
+declare const formatDateYYYYMMDDTHHMMSS: {
+    (value: DateRepresentationNull): string;
+    cache: import("quick-lru").default<string, string>;
+};
+/**
+ * We cannot Memoize this function since "now" is always changing.
+ */
+declare const formateRelativeDate: (value: DateRepresentationNull, options?: FormatDateRelativeOptions) => string;
+export { formatDate, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, formateRelativeDate, };
