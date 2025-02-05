@@ -177,7 +177,7 @@ const _convertToUnit = (seconds, unit: Intl.RelativeTimeFormatUnit) => {
 /**
  * We cannot Memoize this function since "now" is always changing.
  */
-const formateRelativeDate = (
+const formatDateRelative = (
   value: DateRepresentationNull,
   options: FormatDateRelativeOptions = {},
 ) => {
@@ -222,5 +222,5 @@ export {
   formatDate,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
-  formateRelativeDate,
+  formatDateRelative,
 };

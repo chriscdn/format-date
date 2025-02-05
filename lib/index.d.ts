@@ -30,5 +30,5 @@ declare const formatDateYYYYMMDDTHHMMSS: {
 /**
  * We cannot Memoize this function since "now" is always changing.
  */
-declare const formateRelativeDate: (value: DateRepresentationNull, options?: FormatDateRelativeOptions) => string;
-export { formatDate, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, formateRelativeDate, };
+declare const formatDateRelative: (value: DateRepresentationNull, options?: FormatDateRelativeOptions) => string;
+export { formatDate, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, formatDateRelative, };
