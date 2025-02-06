@@ -4,7 +4,7 @@ import {
   FormatDatePreset,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
-  formateRelativeDate,
+  formatDateRelative,
 } from "../src";
 import { EpochUnit, toDate } from "@chriscdn/to-date";
 
@@ -123,12 +123,39 @@ describe("12 Hours", () => {
 });
 
 describe("Relative", () => {
+  test("0 Seconds", () => {
+    expect(
+      formatDateRelative(
+        "2026-02-07",
+        {
+          unit: "second",
+        },
+        "2026-02-07",
+      ),
+    ).toBe("in 0 seconds");
+  });
+
   test("Seconds", () => {
     expect(
-      formateRelativeDate("2026-02-07", {
-        unit: null,
-        // formatOptions: { style: "narrow" },
-      }),
-    ).toBe("asdf");
+      formatDateRelative(
+        "2026-02-06",
+        {
+          unit: "second",
+        },
+        "2026-02-07",
+      ),
+    ).toBe("86,400 seconds ago");
+  });
+
+  test("Day minus 1", () => {
+    expect(
+      formatDateRelative(
+        "2026-02-05T23:00:00",
+        {
+          unit: "days",
+        },
+        "2026-02-06T03:00:00",
+      ),
+    ).toBe("0 days ago");
   });
 });

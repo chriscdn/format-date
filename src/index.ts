@@ -3,8 +3,8 @@ import { Memoize } from "@chriscdn/memoize";
 import { fetchPreset, FormatDatePreset } from "./presets";
 import { getUserLocale } from "get-user-locale";
 
-type DateRepresentation = Parameters<typeof toDate>[0];
-type DateRepresentationNull = DateRepresentation | undefined | null;
+export type DateRepresentation = Parameters<typeof toDate>[0];
+export type DateRepresentationNull = DateRepresentation | undefined | null;
 export { FormatDatePreset } from "./presets";
 
 export type FormatDateOptions = {
@@ -145,7 +145,7 @@ const formatDateYYYYMMDDTHHMMSS = Memoize((value: DateRepresentationNull) => {
   }
 });
 
-const _convertToUnit = (seconds, unit: Intl.RelativeTimeFormatUnit) => {
+const _convertToUnit = (seconds: number, unit: Intl.RelativeTimeFormatUnit) => {
   switch (unit) {
     case "year":
     case "years":
@@ -180,6 +180,7 @@ const _convertToUnit = (seconds, unit: Intl.RelativeTimeFormatUnit) => {
 const formatDateRelative = (
   value: DateRepresentationNull,
   options: FormatDateRelativeOptions = {},
+  _now: DateRepresentationNull,
 ) => {
   if (value === undefined || value === null) {
     return null;
@@ -188,7 +189,7 @@ const formatDateRelative = (
     const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
     const formatOptions = options.formatOptions ?? {};
 
-    const now = new Date();
+    const now = toDate(_now) ?? new Date();
     const date = toDate(value, epochUnit);
 
     const diffInSeconds = Math.round((date.getTime() - now.getTime()) / 1000);
@@ -213,6 +214,9 @@ const formatDateRelative = (
     }
 
     const resolvedValue = _convertToUnit(diffInSeconds, unit);
+
+    // console.log(date);
+    // console.log(now);
 
     return _formatRelativeDate(resolvedValue, unit, locale, formatOptions);
   }

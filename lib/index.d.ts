@@ -1,7 +1,7 @@
 import { EpochUnit, toDate } from "@chriscdn/to-date";
 import { FormatDatePreset } from "./presets";
-type DateRepresentation = Parameters<typeof toDate>[0];
-type DateRepresentationNull = DateRepresentation | undefined | null;
+export type DateRepresentation = Parameters<typeof toDate>[0];
+export type DateRepresentationNull = DateRepresentation | undefined | null;
 export { FormatDatePreset } from "./presets";
 export type FormatDateOptions = {
     locale?: string;
@@ -30,5 +30,5 @@ declare const formatDateYYYYMMDDTHHMMSS: {
 /**
  * We cannot Memoize this function since "now" is always changing.
  */
-declare const formatDateRelative: (value: DateRepresentationNull, options?: FormatDateRelativeOptions) => string;
+declare const formatDateRelative: (value: DateRepresentationNull, options: FormatDateRelativeOptions, _now: DateRepresentationNull) => string;
 export { formatDate, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, formatDateRelative, };
