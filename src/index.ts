@@ -180,7 +180,7 @@ const _convertToUnit = (seconds: number, unit: Intl.RelativeTimeFormatUnit) => {
 const formatDateRelative = (
   value: DateRepresentationNull,
   options: FormatDateRelativeOptions = {},
-  _now: DateRepresentationNull,
+  _now: DateRepresentationNull = undefined,
 ) => {
   if (value === undefined || value === null) {
     return null;
