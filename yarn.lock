@@ -905,10 +905,10 @@
   resolved "https://registry.yarnpkg.com/@chriscdn/promise-semaphore/-/promise-semaphore-2.0.9.tgz#dfb211c1b81711e59e031d3754463d0c6637a121"
   integrity sha512-kKXJcm5gM8FN8O8U20H19/85b8R33K0Q2u5cnm9mfblK/7QcNChlOhCTWgnrr8wYiuF1ZbYIZcioxW79QfjnmQ==
 
-"@chriscdn/to-date@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@chriscdn/to-date/-/to-date-1.0.9.tgz#04c6f501a16d207b46ac71a3bbc954e27103fb0d"
-  integrity sha512-b1mpPm3mv0CEYStmHzp3NqhcbeHiVRgRkqEV7BzceObinMQja4wl5jpJWjQOzi7wBEANPFuW6MSAP6O303hS2A==
+"@chriscdn/to-date@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@chriscdn/to-date/-/to-date-1.0.10.tgz#af38b8ffedc00f423584193ad43379dce2bcb707"
+  integrity sha512-nTv+r7E8x04OR6B+kQ8HSExfi2G+xzVXVvv8rxTfrENTjbRFAnmhcS3cBc+TGsvhItMYhItEyFIoK38zeC/gOQ==
 
 "@esbuild/aix-ppc64@0.24.2":
   version "0.24.2"
