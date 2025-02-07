@@ -27,8 +27,12 @@ declare const formatDateYYYYMMDDTHHMMSS: {
     (value: DateRepresentationNull): string;
     cache: import("quick-lru").default<string, string>;
 };
+declare const formatDateRange: {
+    (start: DateRepresentationNull, end: DateRepresentationNull, options?: FormatDateOptions): string;
+    cache: import("quick-lru").default<string, string>;
+};
 /**
- * We cannot Memoize this function since "now" is always changing.
+ * We cannot Memoize this function since "now" isn't fixed.
  */
 declare const formatDateRelative: (value: DateRepresentationNull, options?: FormatDateRelativeOptions, _now?: DateRepresentationNull) => string;
-export { formatDate, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, formatDateRelative, };
+export { formatDate, formatDateRange, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, formatDateRelative, };

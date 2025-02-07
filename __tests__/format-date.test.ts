@@ -5,6 +5,7 @@ import {
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
   formatDateRelative,
+  formatDateRange,
 } from "../src";
 import { EpochUnit, toDate } from "@chriscdn/to-date";
 
@@ -157,5 +158,15 @@ describe("Relative", () => {
         "2026-02-06T03:00:00",
       ),
     ).toBe("0 days ago");
+  });
+});
+
+describe("Range", () => {
+  test("Range1", () => {
+    expect(
+      formatDateRange("2025-01-01", "2029-01-08T08:00:00", {
+        locale: "fr",
+      }),
+    ).toBe("1 janvier 2025 – 8 janvier 2029");
   });
 });

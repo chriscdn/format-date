@@ -33,34 +33,6 @@ const _fetchRelativeFormatter = Memoize(
   { maxSize: 20 },
 );
 
-const _formatDate = Memoize(
-  (
-    value: DateRepresentation,
-    locale: string,
-    epochUnit: EpochUnit,
-    formatOptions: Intl.DateTimeFormatOptions,
-  ) => {
-    const date = toDate(value, epochUnit);
-    const dateFormatter = _fetchFormatter(locale, formatOptions);
-    return isDate(date) ? dateFormatter.format(date) : undefined;
-  },
-);
-
-const _formatRelativeDate = Memoize(
-  (
-    value: number,
-    unit: Intl.RelativeTimeFormatUnit,
-    locale: string,
-    formatOptions: Intl.DateTimeFormatOptions,
-  ) => {
-    const dateRelativeFormatter = _fetchRelativeFormatter(
-      locale,
-      formatOptions,
-    );
-    return dateRelativeFormatter.format(value, unit);
-  },
-);
-
 /**
  * Get the browser locale, if possible. This will likely fail in SSR (i.e.,
  * Nuxt). Converts underscores to dashes.
@@ -78,12 +50,13 @@ const _browserLocale = Memoize(
 
 const formatDate = Memoize(
   (value: DateRepresentationNull, options: FormatDateOptions = {}) => {
-    if (value === undefined || value === null) {
-      return null;
-    } else {
+    const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
+    const date = toDate(value, epochUnit);
+
+    if (isDate(date)) {
       const locale: Intl.LocalesArgument = _browserLocale(options);
       const preset = options.preset ?? FormatDatePreset.DateTime;
-      const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
+
       const formatOptions = options.formatOptions ?? {};
 
       const intlFormatterOptions = fetchPreset(preset);
@@ -93,7 +66,11 @@ const formatDate = Memoize(
         ...formatOptions,
       };
 
-      return _formatDate(value, locale, epochUnit, dateTimeFormatOptions);
+      const dateFormatter = _fetchFormatter(locale, dateTimeFormatOptions);
+
+      return dateFormatter.format(date);
+    } else {
+      return null;
     }
   },
 );
@@ -101,7 +78,7 @@ const formatDate = Memoize(
 const formatDateYYYYMMDD = Memoize((value: DateRepresentationNull) => {
   const d = toDate(value);
 
-  if (d) {
+  if (isDate(d)) {
     const year = d.getFullYear();
     const month = d.getMonth() + 1;
     const day = d.getDate();
@@ -174,19 +151,51 @@ const _convertToUnit = (seconds: number, unit: Intl.RelativeTimeFormatUnit) => {
   }
 };
 
+const formatDateRange = Memoize(
+  (
+    start: DateRepresentationNull,
+    end: DateRepresentationNull,
+    options: FormatDateOptions = {},
+  ) => {
+    const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
+
+    const startDate = toDate(start, epochUnit);
+    const endDate = toDate(end, epochUnit);
+
+    if (isDate(startDate) && isDate(endDate)) {
+      const locale: Intl.LocalesArgument = _browserLocale(options);
+      const formatOptions = options.formatOptions ?? {};
+
+      // Opinionated default to {dateStyle: "long"}
+      const formatter = _fetchFormatter(locale, {
+        dateStyle: "long",
+        ...formatOptions,
+      });
+
+      // @ts-ignore Seems to be a TS error here for whatever reason.
+      return formatter.formatRange(startDate, endDate);
+    } else {
+      return null;
+    }
+  },
+);
+
 /**
- * We cannot Memoize this function since "now" is always changing.
+ * We cannot Memoize this function since "now" isn't fixed.
  */
 const formatDateRelative = (
   value: DateRepresentationNull,
   options: FormatDateRelativeOptions = {},
   _now: DateRepresentationNull = undefined,
 ) => {
-  if (value === undefined || value === null) {
-    return null;
-  } else {
+  const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
+
+  const date = toDate(value, epochUnit);
+  const now = toDate(_now) ?? new Date();
+
+  if (isDate(date) && isDate(now)) {
     const locale: Intl.LocalesArgument = _browserLocale(options);
-    const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
+
     const formatOptions = options.formatOptions ?? {};
 
     const now = toDate(_now) ?? new Date();
@@ -213,17 +222,22 @@ const formatDateRelative = (
       unit = "year";
     }
 
-    const resolvedValue = _convertToUnit(diffInSeconds, unit);
+    const diffInUnits = _convertToUnit(diffInSeconds, unit);
 
-    // console.log(date);
-    // console.log(now);
+    const dateRelativeFormatter = _fetchRelativeFormatter(
+      locale,
+      formatOptions,
+    );
 
-    return _formatRelativeDate(resolvedValue, unit, locale, formatOptions);
+    return dateRelativeFormatter.format(diffInUnits, unit);
+  } else {
+    return null;
   }
 };
 
 export {
   formatDate,
+  formatDateRange,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
   formatDateRelative,
