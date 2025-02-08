@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@chriscdn/memoize": "^1.0.3",
-    "@chriscdn/to-date": "^1.0.10",
+    "@chriscdn/to-date": "^1.0.11",
     "get-user-locale": "^2.3.2"
   },
   "devDependencies": {
