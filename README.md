@@ -36,7 +36,7 @@ import {
 
 Each function accepts a date as a `string`, `number`, or `Date`.
 
-When a `number` is provided, it can represent seconds, milliseconds, or microseconds since the epoch. The library determines the unit based on the number of digits but allows explicit control using the `epochUnit` parameter.
+When a `number` is provided, it can represent seconds, milliseconds, or microseconds since the epoch. The library determines the unit based on the number of digits, but allows explicit control using the `epochUnit` parameter.
 
 When a `string` or `number` is provided, it is first converted into a `Date` instance before formatting. This means JavaScript's string parsing rules and time zone caveats apply. For details, see [Date time string format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format).
 
@@ -96,7 +96,7 @@ const formattedDate = formatDateYYYYMMDD("2025-02-12T00:00:00");
 // "2025-02-12"
 ```
 
-By default, it uses the local time zone, but you can specify a different one with the second parameter:
+The second parameter allows specifying a time zone, which defaults to the system time zone if omitted or `undefined`:
 
 ```ts
 const formattedDate = formatDateYYYYMMDD("2025-02-12", "America/Toronto");
@@ -112,7 +112,7 @@ const formattedDate = formatDateYYYYMMDDTHHMMSS("2025-02-12T00:00:00");
 // "2025-02-12T00:00:00"
 ```
 
-By default, it uses the local time zone, but you can specify a different one with the second parameter:
+The second parameter allows specifying a time zone, which defaults to the system time zone if omitted or `undefined`:
 
 ```ts
 const formattedDate = formatDateYYYYMMDDTHHMMSS(
@@ -175,7 +175,7 @@ const formattedDateRelative = formatDateRelative("2024-11-25");
 
 The function calculates the duration from the current time to the target date and selects an appropriate unit, such as seconds, minutes, hours, days, weeks, months, or years, based on the duration size. A few notes:
 
-- The resolution is opinionated. For example, a duration of "6 weeks" is interpreted as "6 weeks" and not "1 month."
+- The resolution is opinionated. For example, a duration of "42 days" is interpreted as "6 weeks" and not "1 month."
 - All units are rounded to zero significant digits, except for years, which are rounded to one significant digit (e.g., "in 1.5 years").
 - Durations longer than a day are resolved as calendar days. For example, 26 hours becomes "in 2 days" (spanning _two calendar days_) instead of being rounded down to "in 1 day".
 
