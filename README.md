@@ -87,7 +87,7 @@ const formattedDate = formatDate(sampleDate, options);
   - `EpochUnit.MICROSECONDS`
 - **`formatOptions`**: Additional options for the underlying `Intl.DateTimeFormat` constructor, which are merged with the selected preset. See the [DateTimeFormat parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#parameters) documentation for options.
 
-## Formatting as YYYY-MM-DD
+### Formatting as YYYY-MM-DD
 
 Format a date as `YYYY-MM-DD`. Example:
 
@@ -133,7 +133,7 @@ const formattedDateRange = formatDateRange("2025-02-01", "2025-02-15");
 // "February 1 – 15, 2025"
 ```
 
-### Options
+#### Options
 
 The `formatDateRange` function accepts a third parameter with options. The following shows all options and their defaults. All options are optional:
 
