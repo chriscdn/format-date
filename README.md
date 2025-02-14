@@ -2,7 +2,7 @@
 
 ## Overview
 
-Effortlessly convert and format dates, including date ranges and relative dates. This library simplifies a common workflow: parsing a date from a JSON response and formatting it for display.
+Easily convert and format dates, including date ranges and relative dates. This library simplifies a common workflow: parsing a date from a JSON response and formatting it for display.
 
 Built on `Intl.DateTimeFormat` and `Intl.RelativeTimeFormat`, it ensures accurate internationalization while using memoization for improved performance.
 
@@ -36,13 +36,13 @@ import {
 
 Each function accepts a date as a `string`, `number`, or `Date`.
 
-When a `number` is provided, it can represent seconds, milliseconds, or microseconds since the epoch. The library determines the unit based on the number of digits, but allows explicit control using the `epochUnit` parameter.
+When a `number` is provided, it can represent seconds, milliseconds, or microseconds since the epoch. The library determines the unit based on the number of digits but allows explicit control using the `epochUnit` parameter.
 
 When a `string` or `number` is provided, it is first converted into a `Date` instance before formatting. This means JavaScript's string parsing rules and time zone caveats apply. For details, see [Date time string format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format).
 
 ### Formatting a Date
 
-By default, formatting uses the local system time zone.
+By default, it uses the local system time zone.
 
 ```ts
 const formattedDate = formatDate("2025-02-12T15:00:00");
@@ -72,7 +72,7 @@ const options: FormatDateOptions = {
 const formattedDate = formatDate(sampleDate, options);
 ```
 
-- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). The system locale is used if `undefined`.
+- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). If `undefined`, the system locale is used.
 - **`preset`**: An opinionated formatting preset:
   - `FormatDatePreset.None`
   - `FormatDatePreset.DateTime` (default)
@@ -154,7 +154,7 @@ const options: FormatDateRangeOptions = {
 const formatted = formatDateRange(startDate, endDate, options);
 ```
 
-- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). The system locale is used if `undefined`.
+- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). If `undefined`, the system locale is used.
 - **`epochUnit`**: Determines how epoch values are interpreted when passing in a `number`:
   - `EpochUnit.BESTGUESS`
   - `EpochUnit.SECONDS`
@@ -201,7 +201,7 @@ const options: FormatDateRelativeOptions = {
 const formattedDate = formatDateRelative(sampleDate, options);
 ```
 
-- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). The system locale is used if `undefined`.
+- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). If `undefined`, the system locale is used.
 - **`unit`**: Specifies the unit for the relative date display. For valid unit values, refer to [the unit documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/format#unit). If `undefined`, the function will automatically choose an appropriate unit based on the duration size.
 - **`epochUnit`**: Determines how epoch values are interpreted when passing in a `number`:
   - `EpochUnit.BESTGUESS`
