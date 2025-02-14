@@ -1,7 +1,18 @@
 import { EpochUnit, isDate, toDate } from "@chriscdn/to-date";
 import { Memoize } from "@chriscdn/memoize";
 import { fetchPreset, FormatDatePreset } from "./presets";
-import { getUserLocale } from "get-user-locale";
+import {
+  convertToUnit,
+  DAY,
+  fetchFormatter,
+  fetchRelativeFormatter,
+  HOUR,
+  MINUTE,
+  MONTH,
+  startOfDay,
+  WEEK,
+  YEAR,
+} from "./utils";
 
 export type DateRepresentation = Parameters<typeof toDate>[0];
 export type DateRepresentationNull = DateRepresentation | undefined | null;
@@ -14,6 +25,12 @@ export type FormatDateOptions = {
   epochUnit?: EpochUnit;
 };
 
+export type FormatDateRangeOptions = {
+  locale?: string;
+  formatOptions?: Intl.DateTimeFormatOptions;
+  epochUnit?: EpochUnit;
+};
+
 export type FormatDateRelativeOptions = {
   locale?: string;
   formatOptions?: Intl.RelativeTimeFormatOptions;
@@ -21,40 +38,13 @@ export type FormatDateRelativeOptions = {
   epochUnit?: EpochUnit;
 };
 
-const _fetchFormatter = Memoize(
-  (locale: string, formatOptions: Intl.DateTimeFormatOptions) =>
-    new Intl.DateTimeFormat(locale, formatOptions),
-  { maxSize: 20 },
-);
-
-const _fetchRelativeFormatter = Memoize(
-  (locale: string, formatOptions: Intl.RelativeTimeFormatOptions) =>
-    new Intl.RelativeTimeFormat(locale, formatOptions),
-  { maxSize: 20 },
-);
-
-/**
- * Get the browser locale, if possible. This will likely fail in SSR (i.e.,
- * Nuxt). Converts underscores to dashes.
- *
- * @param options {Options}
- * @returns
- */
-const _browserLocale = Memoize(
-  (options: FormatDateOptions | FormatDateRelativeOptions) =>
-    (options.locale ?? getUserLocale({ fallbackLocale: "en-GB" })).replace(
-      "_",
-      "-",
-    ),
-);
-
 const formatDate = Memoize(
   (value: DateRepresentationNull, options: FormatDateOptions = {}) => {
     const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
     const date = toDate(value, epochUnit);
 
     if (isDate(date)) {
-      const locale: Intl.LocalesArgument = _browserLocale(options);
+      const locale = options.locale ?? undefined;
       const preset = options.preset ?? FormatDatePreset.DateTime;
 
       const formatOptions = options.formatOptions ?? {};
@@ -66,7 +56,7 @@ const formatDate = Memoize(
         ...formatOptions,
       };
 
-      const dateFormatter = _fetchFormatter(locale, dateTimeFormatOptions);
+      const dateFormatter = fetchFormatter(locale, dateTimeFormatOptions);
 
       return dateFormatter.format(date);
     } else {
@@ -75,87 +65,83 @@ const formatDate = Memoize(
   },
 );
 
-const formatDateYYYYMMDD = Memoize((value: DateRepresentationNull) => {
-  const d = toDate(value);
+const formatDateYYYYMMDD = Memoize(
+  (
+    value: DateRepresentationNull,
+    timeZone?: Intl.DateTimeFormatOptions["timeZone"],
+  ) => {
+    const date = toDate(value);
 
-  if (isDate(d)) {
-    const year = d.getFullYear();
-    const month = d.getMonth() + 1;
-    const day = d.getDate();
+    if (isDate(date)) {
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone,
+        hourCycle: "h23",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      };
 
-    return [
-      year,
-      month.toString().padStart(2, "0"),
-      day.toString().padStart(2, "0"),
-    ].join("-");
-  } else {
-    return null;
-  }
-});
+      const formatter = fetchFormatter("en-US", options);
+      const parts = formatter.formatToParts(date);
 
-const formatDateYYYYMMDDTHHMMSS = Memoize((value: DateRepresentationNull) => {
-  const d = toDate(value);
+      const year = parts.find((part) => part.type === "year")!.value;
+      const month = parts.find((part) => part.type === "month")!.value;
+      const day = parts.find((part) => part.type === "day")!.value;
 
-  if (d) {
-    const year = d.getFullYear();
-    const month = d.getMonth() + 1;
-    const day = d.getDate();
+      // Return the formatted date in the form "YYYY-MM-DD"
+      return `${year}-${month}-${day}`;
+    } else {
+      return null;
+    }
+  },
+);
 
-    const hours = d.getHours();
-    const minutes = d.getMinutes();
-    const seconds = d.getSeconds();
+const formatDateYYYYMMDDTHHMMSS = Memoize(
+  (
+    value: DateRepresentationNull,
+    timeZone?: Intl.DateTimeFormatOptions["timeZone"],
+  ) => {
+    const date = toDate(value);
 
-    return [
-      [
-        year,
-        month.toString().padStart(2, "0"),
-        day.toString().padStart(2, "0"),
-      ].join("-"),
-      [
-        hours.toString().padStart(2, "0"),
-        minutes.toString().padStart(2, "0"),
-        seconds.toString().padStart(2, "0"),
-      ].join(":"),
-    ].join("T");
-  } else {
-    return null;
-  }
-});
+    if (isDate(date)) {
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone,
+        hourCycle: "h23",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      };
 
-const _convertToUnit = (seconds: number, unit: Intl.RelativeTimeFormatUnit) => {
-  switch (unit) {
-    case "year":
-    case "years":
-      return Math.round(seconds / (60 * 60 * 24 * 365));
-    case "quarter":
-    case "quarters":
-      return Math.round(seconds / (60 * 60 * 24 * 91.25));
-    case "month":
-    case "months":
-      return Math.round(seconds / (60 * 60 * 24 * 30.4375));
-    case "week":
-    case "weeks":
-      return Math.round(seconds / (60 * 60 * 24 * 7));
-    case "day":
-    case "days":
-      return Math.round(seconds / (60 * 60 * 24));
-    case "hour":
-    case "hours":
-      return Math.round(seconds / (60 * 60));
-    case "minute":
-    case "minutes":
-      return Math.round(seconds / 60);
-    case "second":
-    case "seconds":
-      return seconds;
-  }
-};
+      const formatter = fetchFormatter("en-US", options);
+      const parts = formatter.formatToParts(date);
+
+      // Extract the formatted components from the parts
+      const year = parts.find((part) => part.type === "year")!.value;
+      const month = parts.find((part) => part.type === "month")!.value;
+      const day = parts.find((part) => part.type === "day")!.value;
+      const hours = parts.find((part) => part.type === "hour")!.value;
+      const minutes = parts.find((part) => part.type === "minute")!.value;
+      const seconds = parts.find((part) => part.type === "second")!.value;
+
+      // Return the formatted date in the form "YYYY-MM-DDTHH:MM:SS"
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    } else {
+      return null;
+    }
+  },
+);
 
 const formatDateRange = Memoize(
   (
     start: DateRepresentationNull,
     end: DateRepresentationNull,
-    options: FormatDateOptions = {},
+    options: FormatDateRangeOptions = {},
   ) => {
     const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
 
@@ -163,12 +149,12 @@ const formatDateRange = Memoize(
     const endDate = toDate(end, epochUnit);
 
     if (isDate(startDate) && isDate(endDate)) {
-      const locale: Intl.LocalesArgument = _browserLocale(options);
+      const locale = options.locale ?? undefined;
       const formatOptions = options.formatOptions ?? {};
 
       // Opinionated default to {dateStyle: "long"}
-      const formatter = _fetchFormatter(locale, {
-        dateStyle: "long",
+      const formatter = fetchFormatter(locale, {
+        // dateStyle: "long",
         ...formatOptions,
       });
 
@@ -180,26 +166,22 @@ const formatDateRange = Memoize(
   },
 );
 
-/**
- * We cannot Memoize this function since "now" isn't fixed.
- */
 const formatDateRelative = (
   value: DateRepresentationNull,
   options: FormatDateRelativeOptions = {},
   _now: DateRepresentationNull = undefined,
 ) => {
+  // We cannot Memoize this function since "now" isn't fixed.
+
   const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
 
   const date = toDate(value, epochUnit);
-  const now = toDate(_now) ?? new Date();
+  const now = toDate(_now, epochUnit) ?? new Date();
 
   if (isDate(date) && isDate(now)) {
-    const locale: Intl.LocalesArgument = _browserLocale(options);
+    const locale = options.locale;
 
     const formatOptions = options.formatOptions ?? {};
-
-    const now = toDate(_now) ?? new Date();
-    const date = toDate(value, epochUnit);
 
     const diffInSeconds = Math.round((date.getTime() - now.getTime()) / 1000);
     const absDiff = Math.abs(diffInSeconds);
@@ -208,26 +190,36 @@ const formatDateRelative = (
 
     if (options.unit) {
       unit = options.unit;
-    } else if (absDiff < 60) {
+    } else if (absDiff < MINUTE) {
       unit = "second";
-    } else if (absDiff < 3600) {
+    } else if (absDiff < HOUR) {
       unit = "minute";
-    } else if (absDiff < 86400) {
+    } else if (absDiff < DAY) {
       unit = "hour";
-    } else if (absDiff < 2592000) {
+    } else if (absDiff < 2 * WEEK) {
       unit = "day";
-    } else if (absDiff < 31536000) {
+    } else if (absDiff < 2 * MONTH) {
+      unit = "week";
+    } else if (absDiff < YEAR) {
       unit = "month";
     } else {
       unit = "year";
     }
 
-    const diffInUnits = _convertToUnit(diffInSeconds, unit);
+    // If the difference is greater than 24hrs, then switch our diff in seconds
+    // to be in units of whole days. This will ensure our relative date is
+    // respective of calendar days and not units of 24hrs.
 
-    const dateRelativeFormatter = _fetchRelativeFormatter(
-      locale,
-      formatOptions,
-    );
+    const resolvedDiffInSeconds =
+      absDiff > DAY
+        ? Math.round(
+            (startOfDay(date).getTime() - startOfDay(now).getTime()) / 1000,
+          )
+        : diffInSeconds;
+
+    const diffInUnits = convertToUnit(resolvedDiffInSeconds, unit);
+
+    const dateRelativeFormatter = fetchRelativeFormatter(locale, formatOptions);
 
     return dateRelativeFormatter.format(diffInUnits, unit);
   } else {
@@ -238,7 +230,7 @@ const formatDateRelative = (
 export {
   formatDate,
   formatDateRange,
+  formatDateRelative,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
-  formatDateRelative,
 };

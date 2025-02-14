@@ -9,6 +9,11 @@ export type FormatDateOptions = {
     formatOptions?: Intl.DateTimeFormatOptions;
     epochUnit?: EpochUnit;
 };
+export type FormatDateRangeOptions = {
+    locale?: string;
+    formatOptions?: Intl.DateTimeFormatOptions;
+    epochUnit?: EpochUnit;
+};
 export type FormatDateRelativeOptions = {
     locale?: string;
     formatOptions?: Intl.RelativeTimeFormatOptions;
@@ -16,23 +21,20 @@ export type FormatDateRelativeOptions = {
     epochUnit?: EpochUnit;
 };
 declare const formatDate: {
-    (value: DateRepresentationNull, options?: FormatDateOptions): string;
-    cache: import("quick-lru").default<string, string>;
+    (value: DateRepresentationNull, options?: FormatDateOptions | undefined): string | null;
+    cache: import("quick-lru").default<string, string | null>;
 };
 declare const formatDateYYYYMMDD: {
-    (value: DateRepresentationNull): string;
-    cache: import("quick-lru").default<string, string>;
+    (value: DateRepresentationNull, timeZone?: string | undefined): string | null;
+    cache: import("quick-lru").default<string, string | null>;
 };
 declare const formatDateYYYYMMDDTHHMMSS: {
-    (value: DateRepresentationNull): string;
-    cache: import("quick-lru").default<string, string>;
+    (value: DateRepresentationNull, timeZone?: string | undefined): string | null;
+    cache: import("quick-lru").default<string, string | null>;
 };
 declare const formatDateRange: {
-    (start: DateRepresentationNull, end: DateRepresentationNull, options?: FormatDateOptions): string;
-    cache: import("quick-lru").default<string, string>;
+    (start: DateRepresentationNull, end: DateRepresentationNull, options?: FormatDateRangeOptions | undefined): string | null;
+    cache: import("quick-lru").default<string, string | null>;
 };
-/**
- * We cannot Memoize this function since "now" isn't fixed.
- */
-declare const formatDateRelative: (value: DateRepresentationNull, options?: FormatDateRelativeOptions, _now?: DateRepresentationNull) => string;
-export { formatDate, formatDateRange, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, formatDateRelative, };
+declare const formatDateRelative: (value: DateRepresentationNull, options?: FormatDateRelativeOptions, _now?: DateRepresentationNull) => string | null;
+export { formatDate, formatDateRange, formatDateRelative, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, };

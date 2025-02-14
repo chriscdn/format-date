@@ -2,7 +2,9 @@
 
 ## Overview
 
-This package simplifies converting a date representation (such as a `number`, `string`, or `Date`) into a formatted date string. It uses [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) for formatting.
+Effortlessly convert and format dates, including date ranges and relative dates. This library simplifies a common workflow: parsing a date from a JSON response and formatting it for display.
+
+Built on `Intl.DateTimeFormat` and `Intl.RelativeTimeFormat`, it ensures accurate internationalization while using memoization for improved performance.
 
 ## Installation
 
@@ -20,55 +22,193 @@ yarn add @chriscdn/format-date
 
 ## Usage
 
-### Formatting a Date
+### Importing
 
 ```ts
-import { formatDate } from "@chriscdn/format-date";
-
-const formattedDate = formatDate("2024-11-25T15:00:00");
-// Output: November 25, 2024 at 15:00
+import {
+  formatDate,
+  formatDateRange,
+  formatDateRelative,
+  formatDateYYYYMMDD,
+  formatDateYYYYMMDDTHHMMSS,
+} from "@chriscdn/format-date";
 ```
 
-The first argument can be a `string`, `number`, or `Date`. These are converted to a `Date` object with [@chriscdn/to-date](https://www.npmjs.com/package/@chriscdn/to-date) before formating with [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat). A `null` is returned if parsing fails.
+Each function accepts a date as a `string`, `number`, or `Date`.
 
-### Configuration Options
+When a `number` is provided, it can represent seconds, milliseconds, or microseconds since the epoch. The library determines the unit based on the number of digits, but allows explicit control using the `epochUnit` parameter.
 
-The `formatDate` function accepts a second parameter with options. All options are optional:
+When a `string` or `number` is provided, it is first converted into a `Date` instance before formatting. This means JavaScript's string parsing rules and time zone caveats apply. For details, see [Date time string format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format).
+
+### Formatting a Date
+
+By default, formatting uses the local system time zone.
 
 ```ts
-import { formatDate, FormatDatePreset } from "@chriscdn/format-date";
+const formattedDate = formatDate("2025-02-12T15:00:00");
+// "February 12, 2025 at 3:00 PM" (assuming an English locale)
+```
 
-const options = {
-  locale: "en-GB", // the language/region format for formatting
-  preset: FormatDatePreset.DateTime, // a predefined format
-  epochUnit: EpochUnit.BESTGUESS, // the units when parsing numbers
-  formatOptions: {}, // additional formatting options for Intl.DateTimeFormat
+#### Options
+
+The `formatDate` function accepts a second parameter with options. The following shows all options and their defaults. All options are optional:
+
+```ts
+import {
+  formatDate,
+  FormatDatePreset,
+  type FormatDateOptions,
+} from "@chriscdn/format-date";
+
+import { EpochUnit } from "@chriscdn/to-date";
+
+const options: FormatDateOptions = {
+  locale: undefined,
+  preset: FormatDatePreset.DateTime,
+  epochUnit: EpochUnit.BESTGUESS,
+  formatOptions: {},
 };
 
 const formattedDate = formatDate(sampleDate, options);
 ```
 
-#### **Option Details**
-
-- **`locale`**: Specify the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). If omitted, the package will attempt to determine the locale from your browser. If this fails for any reason, then `en-GB` is used.
-
+- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). The system locale is used if `undefined`.
 - **`preset`**: An opinionated formatting preset:
-
   - `FormatDatePreset.None`
   - `FormatDatePreset.DateTime` (default)
   - `FormatDatePreset.DateTimeShort`
   - `FormatDatePreset.Date`
   - `FormatDatePreset.DateMedium`
   - `FormatDatePreset.DateShort`
+- **`epochUnit`**: Determines how epoch values are interpreted when passing in a `number`:
+  - `EpochUnit.BESTGUESS`
+  - `EpochUnit.SECONDS`
+  - `EpochUnit.MILLISECONDS`
+  - `EpochUnit.MICROSECONDS`
+- **`formatOptions`**: Additional options for the underlying `Intl.DateTimeFormat` constructor, which are merged with the selected preset. See the [DateTimeFormat parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#parameters) documentation for options.
 
-- **`formatOptions`**: Additional options for `Intl.DateTimeFormat`, which are merged with the selected preset.
+## Formatting as YYYY-MM-DD
 
-## Examples
+Format a date as `YYYY-MM-DD`. Example:
 
 ```ts
-const formattedDate = formatDate(1732571243, { locale: "fr" });
-// Output: 25 novembre 2024 à 15:00
+const formattedDate = formatDateYYYYMMDD("2025-02-12T00:00:00");
+// "2025-02-12"
 ```
+
+By default, it uses the local time zone, but you can specify a different one with the second parameter:
+
+```ts
+const formattedDate = formatDateYYYYMMDD("2025-02-12", "America/Toronto");
+// "2025-02-11"
+```
+
+### Formatting as YYYY-MM-DDTHH:MM:SS
+
+Format a date as `YYYY-MM-DDTHH:MM:SS`. Example:
+
+```ts
+const formattedDate = formatDateYYYYMMDDTHHMMSS("2025-02-12T00:00:00");
+// "2025-02-12T00:00:00"
+```
+
+By default, it uses the local time zone, but you can specify a different one with the second parameter:
+
+```ts
+const formattedDate = formatDateYYYYMMDDTHHMMSS(
+  "2025-02-12",
+  "America/Toronto",
+);
+// "2025-02-11T19:00:00"
+```
+
+### Formatting a Date Range
+
+Formats a date range as a human-readable string.
+
+```ts
+import { formatDateRange } from "@chriscdn/format-date";
+
+const formattedDateRange = formatDateRange("2025-02-01", "2025-02-15");
+// "February 1 – 15, 2025"
+```
+
+### Options
+
+The `formatDateRange` function accepts a third parameter with options. The following shows all options and their defaults. All options are optional:
+
+```ts
+import {
+  formatDateRange,
+  type FormatDateRangeOptions,
+} from "@chriscdn/format-date";
+
+import { EpochUnit } from "@chriscdn/to-date";
+
+const options: FormatDateRangeOptions = {
+  locale: undefined,
+  epochUnit: EpochUnit.BESTGUESS,
+  formatOptions: {},
+};
+
+const formatted = formatDateRange(startDate, endDate, options);
+```
+
+- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). The system locale is used if `undefined`.
+- **`epochUnit`**: Determines how epoch values are interpreted when passing in a `number`:
+  - `EpochUnit.BESTGUESS`
+  - `EpochUnit.SECONDS`
+  - `EpochUnit.MILLISECONDS`
+  - `EpochUnit.MICROSECONDS`
+- **`formatOptions`**: Additional options for the underlying `Intl.DateTimeFormat` constructor. See the [DateTimeFormat parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#parameters) documentation for options.
+
+### Formatting a Relative Date
+
+Wraps `Intl.RelativeTimeFormat` to generate human-readable strings relative to the current date and time.
+
+```ts
+import { formatDateRelative } from "@chriscdn/format-date";
+
+const formattedDateRelative = formatDateRelative("2024-11-25");
+// "in 4 days" (assuming today is 2024-11-21)
+```
+
+The function calculates the duration from the current time to the target date and selects an appropriate unit, such as seconds, minutes, hours, days, weeks, months, or years, based on the duration size. A few notes:
+
+- The resolution is opinionated. For example, a duration of "6 weeks" is interpreted as "6 weeks" and not "1 month."
+- All units are rounded to zero significant digits, except for years, which are rounded to one significant digit (e.g., "in 1.5 years").
+- Durations longer than a day are resolved as calendar days. For example, 26 hours becomes "in 2 days" (spanning _two calendar days_) instead of being rounded down to "in 1 day".
+
+#### Options
+
+The `formatDateRelative` function accepts a second parameter with options. The following shows all options and their defaults. All options are optional:
+
+```ts
+import {
+  formatDateRelative,
+  type FormatDateRelativeOptions,
+} from "@chriscdn/format-date";
+
+import { EpochUnit } from "@chriscdn/to-date";
+
+const options: FormatDateRelativeOptions = {
+  locale: undefined,
+  unit: undefined,
+  epochUnit: EpochUnit.BESTGUESS,
+  formatOptions: {},
+};
+
+const formattedDate = formatDateRelative(sampleDate, options);
+```
+
+- **`locale`**: Specifies the desired locale (e.g., `en`, `de`, `en-US`, `en-CA`). Hyphenated locales are preferred, but underscores (e.g., `en_CA`) will be automatically converted to hyphens (e.g., `en-CA`). The system locale is used if `undefined`.
+- **`unit`**: Specifies the unit for the relative date display. For valid unit values, refer to [the unit documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/format#unit). If `undefined`, the function will automatically choose an appropriate unit based on the duration size.
+- **`epochUnit`**: Determines how epoch values are interpreted when passing in a `number`:
+  - `EpochUnit.BESTGUESS`
+  - `EpochUnit.SECONDS`
+  - `EpochUnit.MILLISECONDS`
+  - `EpochUnit.MICROSECONDS`
+- **`formatOptions`**: Additional options for the underlying `Intl.RelativeTimeFormat` constructor. See the [RelativeTimeFormat parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#parameters) documentation for options.
 
 ## License
 

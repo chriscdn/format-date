@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["vitest/importMeta"]
+    "types": ["vitest/importMeta"],
+    "strictNullChecks": true
   }
 }
