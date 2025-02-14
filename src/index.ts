@@ -9,6 +9,7 @@ import {
   HOUR,
   MINUTE,
   MONTH,
+  resolveLocale,
   startOfDay,
   WEEK,
   YEAR,
@@ -44,7 +45,7 @@ const formatDate = Memoize(
     const date = toDate(value, epochUnit);
 
     if (isDate(date)) {
-      const locale = options.locale ?? undefined;
+      const locale = resolveLocale(options.locale);
       const preset = options.preset ?? FormatDatePreset.DateTime;
 
       const formatOptions = options.formatOptions ?? {};
@@ -149,12 +150,12 @@ const formatDateRange = Memoize(
     const endDate = toDate(end, epochUnit);
 
     if (isDate(startDate) && isDate(endDate)) {
-      const locale = options.locale ?? undefined;
+      const locale = resolveLocale(options.locale);
       const formatOptions = options.formatOptions ?? {};
 
       // Opinionated default to {dateStyle: "long"}
       const formatter = fetchFormatter(locale, {
-        // dateStyle: "long",
+        dateStyle: "long",
         ...formatOptions,
       });
 

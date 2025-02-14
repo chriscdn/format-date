@@ -15,4 +15,5 @@ declare const fetchRelativeFormatter: {
     (locale: string | undefined, formatOptions: Intl.RelativeTimeFormatOptions): Intl.RelativeTimeFormat;
     cache: import("quick-lru").default<string, Intl.RelativeTimeFormat>;
 };
-export { startOfDay, convertToUnit, fetchFormatter, fetchRelativeFormatter, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR, };
+declare const resolveLocale: (locale: string | undefined) => string | undefined;
+export { startOfDay, convertToUnit, fetchFormatter, fetchRelativeFormatter, resolveLocale, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR, };

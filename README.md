@@ -2,7 +2,7 @@
 
 ## Overview
 
-Easily convert and format dates, including date ranges and relative dates. This library simplifies a common workflow: parsing a date from a JSON response and formatting it for display.
+Convert and format dates, including date ranges and relative dates. This library helps with the common task of parsing dates and formatting them for display.
 
 Built on `Intl.DateTimeFormat` and `Intl.RelativeTimeFormat`, it ensures accurate internationalization while using memoization for improved performance.
 

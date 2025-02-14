@@ -63,11 +63,14 @@ const fetchRelativeFormatter = Memoize(
   { maxSize: 20 },
 );
 
+const resolveLocale = (locale: string | undefined) => locale?.replace("_", "-");
+
 export {
   startOfDay,
   convertToUnit,
   fetchFormatter,
   fetchRelativeFormatter,
+  resolveLocale,
   SECOND,
   MINUTE,
   HOUR,
