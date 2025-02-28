@@ -88,6 +88,14 @@ describe("Date Ranges", () => {
       }),
     ).toBe(toBe);
   });
+
+  it("Same Day", () => {
+    expect(
+      formatDateRange("2025-02-11", "2025-02-11", {
+        locale,
+      }),
+    ).toBe("February 11, 2025");
+  });
 });
 
 describe("Date Relative", () => {

@@ -23,11 +23,11 @@
   },
   "dependencies": {
     "@chriscdn/memoize": "^1.0.3",
-    "@chriscdn/to-date": "^1.0.12"
+    "@chriscdn/to-date": "^1.0.15"
   },
   "devDependencies": {
     "microbundle": "^0.15.1",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.7"
   },
   "keywords": [
     "dateformat"
