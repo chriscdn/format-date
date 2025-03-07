@@ -22,12 +22,12 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@chriscdn/memoize": "^1.0.3",
+    "@chriscdn/memoize": "^1.0.6",
     "@chriscdn/to-date": "^1.0.15"
   },
   "devDependencies": {
     "microbundle": "^0.15.1",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.8"
   },
   "keywords": [
     "dateformat"
