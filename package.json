@@ -18,7 +18,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "build": "rm -rf ./lib/ && microbundle --format modern,esm,cjs",
-    "dev": "microbundle watch",
+    "watch": "microbundle watch",
     "test": "vitest"
   },
   "dependencies": {
