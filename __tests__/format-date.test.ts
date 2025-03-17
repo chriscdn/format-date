@@ -65,8 +65,8 @@ describe("Date Time Formatting of strings", () => {
 
 describe("Date Ranges", () => {
   // omitting the time means UTC
-  const start = toDate("2025-02-09");
-  const end = toDate("2025-02-13");
+  const start = toDate("2025-02-09")!;
+  const end = toDate("2025-02-13")!;
   const toBe = "February 9 – 13, 2025";
 
   const locale = "en";
@@ -76,14 +76,14 @@ describe("Date Ranges", () => {
   });
 
   it("Date Range with milliseconds", () => {
-    expect(formatDateRange(start!.getTime(), end!.getTime(), { locale })).toBe(
+    expect(formatDateRange(start.getTime(), end.getTime(), { locale })).toBe(
       toBe,
     );
   });
 
   it("Date Range with seconds", () => {
     expect(
-      formatDateRange(start!.getTime() / 1000, end!.getTime() / 1000, {
+      formatDateRange(start.getTime() / 1000, end.getTime() / 1000, {
         locale,
       }),
     ).toBe(toBe);
@@ -276,6 +276,11 @@ describe("YYYY-MM-DD", () => {
   it("Simple 3 - Edge Case", () => {
     // This test depends on the time zone of the device running the test
     expect(formatDateYYYYMMDD("2025-02-12T00:00:00", "UTC")).toBe("2025-02-11");
+  });
+  it("Toronto", () => {
+    expect(formatDateYYYYMMDD("2025-02-12", "America/Toronto")).toBe(
+      "2025-02-11",
+    );
   });
 });
 

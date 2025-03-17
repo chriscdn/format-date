@@ -124,7 +124,7 @@ const formattedDate = formatDateYYYYMMDDTHHMMSS(
 
 ### Formatting a Date Range
 
-Formats a date range as a human-readable string.
+Format a date range as a human-readable string.
 
 ```ts
 import { formatDateRange } from "@chriscdn/format-date";
