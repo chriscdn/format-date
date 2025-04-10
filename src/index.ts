@@ -88,7 +88,11 @@ const formatDateYYYYMMDD = Memoize(
       const formatter = fetchFormatter("en-US", options);
       const parts = formatter.formatToParts(date);
 
-      const year = parts.find((part) => part.type === "year")!.value;
+      // works around year quirk
+      const year = parts.find((part) => part.type === "year")!.value.padStart(
+        4,
+        "0",
+      );
       const month = parts.find((part) => part.type === "month")!.value;
       const day = parts.find((part) => part.type === "day")!.value;
 
@@ -123,7 +127,10 @@ const formatDateYYYYMMDDTHHMMSS = Memoize(
       const parts = formatter.formatToParts(date);
 
       // Extract the formatted components from the parts
-      const year = parts.find((part) => part.type === "year")!.value;
+      const year = parts.find((part) => part.type === "year")!.value.padStart(
+        4,
+        "0",
+      );
       const month = parts.find((part) => part.type === "month")!.value;
       const day = parts.find((part) => part.type === "day")!.value;
       const hours = parts.find((part) => part.type === "hour")!.value;
@@ -211,12 +218,11 @@ const formatDateRelative = (
     // to be in units of whole days. This will ensure our relative date is
     // respective of calendar days and not units of 24hrs.
 
-    const resolvedDiffInSeconds =
-      absDiff > DAY
-        ? Math.round(
-            (startOfDay(date).getTime() - startOfDay(now).getTime()) / 1000,
-          )
-        : diffInSeconds;
+    const resolvedDiffInSeconds = absDiff > DAY
+      ? Math.round(
+        (startOfDay(date).getTime() - startOfDay(now).getTime()) / 1000,
+      )
+      : diffInSeconds;
 
     const diffInUnits = convertToUnit(resolvedDiffInSeconds, unit);
 

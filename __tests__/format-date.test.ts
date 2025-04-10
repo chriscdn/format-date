@@ -1,11 +1,11 @@
-import { describe, expect, test, it } from "vitest";
+import { describe, expect, it, test } from "vitest";
 import {
   formatDate,
   FormatDatePreset,
+  formatDateRange,
+  formatDateRelative,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
-  formatDateRelative,
-  formatDateRange,
 } from "../src";
 import { toDate, toDateUTC } from "@chriscdn/to-date";
 
@@ -307,5 +307,20 @@ describe("Caching", () => {
 
   it("Cache 12", () => {
     expect(formatDate(d12, { locale: "en-GB" })).toBe("12 March 2025 at 15:00");
+  });
+});
+
+describe("Edge Cases", () => {
+  const d = toDateUTC("0002-02-01");
+  const dformatted = formatDateYYYYMMDD(d, "UTC");
+
+  it("Edge Case 1", () => {
+    expect(dformatted).toBe("0002-02-01");
+  });
+
+  it("EdgeCAse2", () => {
+    const pDate = toDateUTC(dformatted);
+    const pdDate = formatDateYYYYMMDD(pDate, "UTC");
+    expect(pdDate).toBe("0002-02-01");
   });
 });
