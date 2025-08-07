@@ -187,7 +187,7 @@ const formatDateRelative = (
   const now = toDate(_now, epochUnit) ?? new Date();
 
   if (isDate(date) && isDate(now)) {
-    const locale = options.locale;
+    const locale = resolveLocale(options.locale);
 
     const formatOptions = options.formatOptions ?? {};
 
