@@ -66,16 +66,16 @@ const fetchRelativeFormatter = Memoize(
 const resolveLocale = (locale: string | undefined) => locale?.replace("_", "-");
 
 export {
-  startOfDay,
   convertToUnit,
+  DAY,
   fetchFormatter,
   fetchRelativeFormatter,
+  HOUR,
+  MINUTE,
+  MONTH,
   resolveLocale,
   SECOND,
-  MINUTE,
-  HOUR,
-  DAY,
+  startOfDay,
   WEEK,
-  MONTH,
   YEAR,
 };

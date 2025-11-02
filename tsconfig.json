@@ -1,6 +1,3 @@
 {
-  "compilerOptions": {
-    "types": ["vitest/importMeta"],
-    "strictNullChecks": true
-  }
+  "extends": "@tsconfig/strictest/tsconfig.json"
 }
