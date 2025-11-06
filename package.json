@@ -22,13 +22,13 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@chriscdn/memoize": "^1.0.10",
-    "@chriscdn/to-date": "^1.0.16"
+    "@chriscdn/memoize": "^1.0.11",
+    "@chriscdn/to-date": "^1.0.18"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.7",
     "microbundle": "^0.15.1",
-    "vitest": "^4.0.6"
+    "vitest": "^4.0.7"
   },
   "keywords": [
     "dateformat"

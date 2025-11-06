@@ -324,3 +324,12 @@ describe("Edge Cases", () => {
     expect(pdDate).toBe("0002-02-01");
   });
 });
+
+describe("toDate TZ", () => {
+  it("formatting old date", () => {
+    const turnOfCentury = "1900-01-01T00:00:00";
+    const dValue = toDateUTC(turnOfCentury);
+    const formatted = formatDateYYYYMMDD(dValue, "UTC");
+    expect(formatted).toBe("1900-01-01");
+  });
+});
