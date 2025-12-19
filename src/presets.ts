@@ -1,6 +1,7 @@
 export enum FormatDatePreset {
   None,
   DateTime,
+  DateTimeMedium,
   DateTimeShort,
   Date,
   DateMedium,
@@ -23,6 +24,18 @@ export const fetchPreset = (
         hour: "numeric",
         minute: "numeric",
       };
+
+    case FormatDatePreset.DateTimeMedium:
+      // "11/25/24, 15:00"
+      // "11/25/24, 3:00 PM"
+      return {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      };
+
     case FormatDatePreset.DateTimeShort:
       // "11/25/24, 15:00"
       // "11/25/24, 3:00 PM"

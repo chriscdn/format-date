@@ -273,10 +273,20 @@ describe("YYYY-MM-DD", () => {
   it("Simple 2", () => {
     expect(formatDateYYYYMMDD("2025-02-12T00:00:00Z")).toBe("2025-02-12");
   });
+
   it("Simple 3 - Edge Case", () => {
     // This test depends on the time zone of the device running the test
     expect(formatDateYYYYMMDD("2025-02-12T00:00:00", "UTC")).toBe("2025-02-11");
   });
+
+  it("Simple 4", () => {
+    expect(
+      formatDate(toDateUTC("2025-02-12"), {
+        preset: FormatDatePreset.DateTimeMedium,
+      }),
+    ).toBe("Feb 12, 2025, 1:00 AM");
+  });
+
   it("Toronto", () => {
     expect(formatDateYYYYMMDD("2025-02-12", "America/Toronto")).toBe(
       "2025-02-11",

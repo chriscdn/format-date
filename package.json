@@ -26,9 +26,9 @@
     "@chriscdn/to-date": "^1.0.18"
   },
   "devDependencies": {
-    "@tsconfig/strictest": "^2.0.7",
+    "@tsconfig/strictest": "^2.0.8",
     "microbundle": "^0.15.1",
-    "vitest": "^4.0.7"
+    "vitest": "^4.0.16"
   },
   "keywords": [
     "dateformat"
