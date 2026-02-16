@@ -28,7 +28,7 @@
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
     "microbundle": "^0.15.1",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.18"
   },
   "keywords": [
     "dateformat"

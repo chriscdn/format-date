@@ -26,8 +26,7 @@ export const fetchPreset = (
       };
 
     case FormatDatePreset.DateTimeMedium:
-      // "11/25/24, 15:00"
-      // "11/25/24, 3:00 PM"
+      // Dec 29, 2023, 3:40 PM"
       return {
         year: "numeric",
         month: "short",
