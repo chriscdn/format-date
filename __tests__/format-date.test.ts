@@ -6,7 +6,7 @@ import {
   formatDateRelative,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
-} from "../src";
+} from "../lib";
 import { toDate, toDateUTC } from "@chriscdn/to-date";
 
 describe("Date Formatting of numbers", () => {
