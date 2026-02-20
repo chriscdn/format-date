@@ -6,29 +6,17 @@
   "author": "Christopher Meyer <chris@schwiiz.org>",
   "license": "MIT",
   "type": "module",
-  "main": "./lib/index.cjs",
-  "module": "./lib/index.js",
+  "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./lib/index.d.ts",
-        "default": "./lib/index.js"
-      },
-      "require": {
-        "types": "./lib/index.d.cts",
-        "default": "./lib/index.cjs"
-      }
-    }
-  },
+  "exports": "./lib/index.js",
   "scripts": {
     "build": "tsup",
     "watch": "yarn build --watch",
     "test": "vitest"
   },
   "dependencies": {
-    "@chriscdn/memoize": "^1.0.11",
-    "@chriscdn/to-date": "^1.0.18"
+    "@chriscdn/memoize": "^2.0.0",
+    "@chriscdn/to-date": "^2.0.0"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
