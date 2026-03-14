@@ -33,6 +33,13 @@ type FormatDateRelativeOptions = {
   relativeTo?: DateInput;
 };
 
+/**
+ * Formats a date into a localized string based on a preset or custom options.
+ *
+ * @param value - The date input to format (string, number, Date, or null/undefined).
+ * @param options - Configuration for locale, presets, and specific Intl options.
+ * @returns The formatted date string, or null if the input is invalid.
+ */
 const formatDate = Memoize(
   (value: DateInput, options: FormatDateOptions = {}) => {
     const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
@@ -60,11 +67,15 @@ const formatDate = Memoize(
   },
 );
 
+/**
+ * Formats a date into a "YYYY-MM-DD" string format.
+ *
+ * @param value - The date input to format.
+ * @param timeZone - Optional IANA time zone identifier.
+ * @returns A string in YYYY-MM-DD format, or null if the input is invalid.
+ */
 const formatDateYYYYMMDD = Memoize(
-  (
-    value: DateInput,
-    timeZone?: Intl.DateTimeFormatOptions["timeZone"],
-  ) => {
+  (value: DateInput, timeZone?: Intl.DateTimeFormatOptions["timeZone"]) => {
     const date = toDate(value);
 
     if (isDate(date)) {
@@ -83,10 +94,9 @@ const formatDateYYYYMMDD = Memoize(
       const parts = formatter.formatToParts(date);
 
       // works around year quirk
-      const year = parts.find((part) => part.type === "year")!.value.padStart(
-        4,
-        "0",
-      );
+      const year = parts
+        .find((part) => part.type === "year")!
+        .value.padStart(4, "0");
       const month = parts.find((part) => part.type === "month")!.value;
       const day = parts.find((part) => part.type === "day")!.value;
 
@@ -98,11 +108,15 @@ const formatDateYYYYMMDD = Memoize(
   },
 );
 
+/**
+ * Formats a date into a "YYYY-MM-DDTHH:MM:SS" string format.
+ *
+ * @param value - The date input to format.
+ * @param timeZone - Optional IANA time zone identifier.
+ * @returns A string in YYYY-MM-DDTHH:MM:SS format, or null if the input is invalid.
+ */
 const formatDateYYYYMMDDTHHMMSS = Memoize(
-  (
-    value: DateInput,
-    timeZone?: Intl.DateTimeFormatOptions["timeZone"],
-  ) => {
+  (value: DateInput, timeZone?: Intl.DateTimeFormatOptions["timeZone"]) => {
     const date = toDate(value);
 
     if (isDate(date)) {
@@ -121,10 +135,9 @@ const formatDateYYYYMMDDTHHMMSS = Memoize(
       const parts = formatter.formatToParts(date);
 
       // Extract the formatted components from the parts
-      const year = parts.find((part) => part.type === "year")!.value.padStart(
-        4,
-        "0",
-      );
+      const year = parts
+        .find((part) => part.type === "year")!
+        .value.padStart(4, "0");
       const month = parts.find((part) => part.type === "month")!.value;
       const day = parts.find((part) => part.type === "day")!.value;
       const hours = parts.find((part) => part.type === "hour")!.value;
@@ -139,12 +152,16 @@ const formatDateYYYYMMDDTHHMMSS = Memoize(
   },
 );
 
+/**
+ * Formats a range between two dates into a localized string.
+ *
+ * @param start - The start date of the range.
+ * @param end - The end date of the range.
+ * @param options - Configuration for locale and Intl format options.
+ * @returns A formatted range string (e.g., "Jan 1 – 5, 2024"), or null if inputs are invalid.
+ */
 const formatDateRange = Memoize(
-  (
-    start: DateInput,
-    end: DateInput,
-    options: FormatDateRangeOptions = {},
-  ) => {
+  (start: DateInput, end: DateInput, options: FormatDateRangeOptions = {}) => {
     const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
 
     const startDate = toDate(start, epochUnit);
@@ -168,6 +185,13 @@ const formatDateRange = Memoize(
   },
 );
 
+/**
+ * Formats a date relative to another date (defaults to now) in a human-readable way.
+ *
+ * @param value - The date to be formatted.
+ * @param options - Configuration for locale, specific units, and the reference date.
+ * @returns A relative string (e.g., "2 days ago", "in 3 months"), or null if input is invalid.
+ */
 const formatDateRelative = (
   value: DateInput,
   options: FormatDateRelativeOptions = {},
@@ -215,11 +239,13 @@ const formatDateRelative = (
     // to be in units of whole days. This will ensure our relative date is
     // respective of calendar days and not units of 24hrs.
 
-    const resolvedDiffInSeconds = absDiff > TimeInSeconds.DAY
-      ? Math.round(
-        (startOfDay(date).getTime() - startOfDay(relativeTo).getTime()) / 1000,
-      )
-      : diffInSeconds;
+    const resolvedDiffInSeconds =
+      absDiff > TimeInSeconds.DAY
+        ? Math.round(
+            (startOfDay(date).getTime() - startOfDay(relativeTo).getTime()) /
+              1000,
+          )
+        : diffInSeconds;
 
     const diffInUnits = convertToUnit(resolvedDiffInSeconds, unit);
 

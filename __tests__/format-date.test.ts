@@ -6,7 +6,7 @@ import {
   formatDateRelative,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
-} from "../src";
+} from "../lib";
 import { toDate, toDateUTC } from "@chriscdn/to-date";
 
 describe("Date Formatting of numbers", () => {
@@ -103,37 +103,37 @@ describe("Date Relative", () => {
 
   it("In one day", () => {
     expect(
-      formatDateRelative(
-        "2025-02-12T15:00:00",
-        { locale, relativeTo: "2025-02-11T15:00:00" },
-      ),
+      formatDateRelative("2025-02-12T15:00:00", {
+        locale,
+        relativeTo: "2025-02-11T15:00:00",
+      }),
     ).toBe("in 1 day");
   });
 
   it("In one hour", () => {
     expect(
-      formatDateRelative(
-        "2025-02-11T16:00:00",
-        { locale, relativeTo: "2025-02-11T15:00:00" },
-      ),
+      formatDateRelative("2025-02-11T16:00:00", {
+        locale,
+        relativeTo: "2025-02-11T15:00:00",
+      }),
     ).toBe("in 1 hour");
   });
 
   it("In 59 minutes", () => {
     expect(
-      formatDateRelative(
-        "2025-02-11T15:59:00",
-        { locale, relativeTo: "2025-02-11T15:00:00" },
-      ),
+      formatDateRelative("2025-02-11T15:59:00", {
+        locale,
+        relativeTo: "2025-02-11T15:00:00",
+      }),
     ).toBe("in 59 minutes");
   });
 
   it("In 5 days", () => {
     expect(
-      formatDateRelative(
-        "2025-02-16T15:00:00",
-        { locale, relativeTo: "2025-02-11T15:00:00" },
-      ),
+      formatDateRelative("2025-02-16T15:00:00", {
+        locale,
+        relativeTo: "2025-02-11T15:00:00",
+      }),
     ).toBe("in 5 days");
   });
 
@@ -141,109 +141,110 @@ describe("Date Relative", () => {
     // We want to calculate calendar days such that a start or end date at
     // opposite times don't resolve to one less or more days.
     expect(
-      formatDateRelative(
-        "2025-02-16T23:00:00",
-        { locale, relativeTo: "2025-02-11T01:00:00" },
-      ),
+      formatDateRelative("2025-02-16T23:00:00", {
+        locale,
+        relativeTo: "2025-02-11T01:00:00",
+      }),
     ).toBe("in 5 days");
   });
 
   it("In 13 days", () => {
     expect(
-      formatDateRelative(
-        "2025-02-16T15:00:00",
-        { locale, relativeTo: "2025-02-03T15:00:00" },
-      ),
+      formatDateRelative("2025-02-16T15:00:00", {
+        locale,
+        relativeTo: "2025-02-03T15:00:00",
+      }),
     ).toBe("in 13 days");
   });
 
   it("In 2 weeks", () => {
     expect(
-      formatDateRelative(
-        "2025-02-16T15:00:00",
-        { locale, relativeTo: "2025-02-01T15:00:00" },
-      ),
+      formatDateRelative("2025-02-16T15:00:00", {
+        locale,
+        relativeTo: "2025-02-01T15:00:00",
+      }),
     ).toBe("in 2 weeks");
   });
 
   it("In 3 weeks", () => {
     expect(
-      formatDateRelative(
-        "2025-02-21T15:00:00",
-        { locale, relativeTo: "2025-02-01T15:00:00" },
-      ),
+      formatDateRelative("2025-02-21T15:00:00", {
+        locale,
+        relativeTo: "2025-02-01T15:00:00",
+      }),
     ).toBe("in 3 weeks");
   });
 
   it("In 6 weeks", () => {
     expect(
-      formatDateRelative(
-        "2025-03-15T15:00:00",
-        { locale, relativeTo: "2025-02-01T15:00:00" },
-      ),
+      formatDateRelative("2025-03-15T15:00:00", {
+        locale,
+        relativeTo: "2025-02-01T15:00:00",
+      }),
     ).toBe("in 6 weeks");
   });
 
   it("In 2 months", () => {
     expect(
-      formatDateRelative(
-        "2025-04-15T15:00:00",
-        { locale, relativeTo: "2025-02-01T15:00:00" },
-      ),
+      formatDateRelative("2025-04-15T15:00:00", {
+        locale,
+        relativeTo: "2025-02-01T15:00:00",
+      }),
     ).toBe("in 2 months");
   });
 
   it("In 24 months", () => {
     expect(
-      formatDateRelative(
-        "2027-02-15T15:00:00",
-        { locale, unit: "months", relativeTo: "2025-02-14T15:00:00" },
-      ),
+      formatDateRelative("2027-02-15T15:00:00", {
+        locale,
+        unit: "months",
+        relativeTo: "2025-02-14T15:00:00",
+      }),
     ).toBe("in 24 months");
   });
 
   it("In 11 months", () => {
     expect(
-      formatDateRelative(
-        "2026-01-01T15:00:00",
-        { locale, relativeTo: "2025-02-01T15:00:00" },
-      ),
+      formatDateRelative("2026-01-01T15:00:00", {
+        locale,
+        relativeTo: "2025-02-01T15:00:00",
+      }),
     ).toBe("in 11 months");
   });
 
   it("In 1 year", () => {
     expect(
-      formatDateRelative(
-        "2026-02-01T15:00:00",
-        { locale, relativeTo: "2025-02-01T15:00:00" },
-      ),
+      formatDateRelative("2026-02-01T15:00:00", {
+        locale,
+        relativeTo: "2025-02-01T15:00:00",
+      }),
     ).toBe("in 1 year");
   });
 
   it("In 1 year", () => {
     expect(
-      formatDateRelative(
-        "2026-07-01T15:00:00",
-        { locale, relativeTo: "2025-02-01T15:00:00" },
-      ),
+      formatDateRelative("2026-07-01T15:00:00", {
+        locale,
+        relativeTo: "2025-02-01T15:00:00",
+      }),
     ).toBe("in 1.4 years");
   });
 
   it("In 2 years", () => {
     expect(
-      formatDateRelative(
-        "2027-02-01T15:00:00",
-        { locale, relativeTo: "2025-02-01T15:00:00" },
-      ),
+      formatDateRelative("2027-02-01T15:00:00", {
+        locale,
+        relativeTo: "2025-02-01T15:00:00",
+      }),
     ).toBe("in 2 years");
   });
 
   it("Error", () => {
     expect(() =>
-      formatDateRelative(
-        "2027-02-01T15:00:00",
-        { locale, relativeTo: "unknownz" },
-      )
+      formatDateRelative("2027-02-01T15:00:00", {
+        locale,
+        relativeTo: "unknownz",
+      }),
     ).toThrow("Cannot convert unknownz to date.");
   });
 
