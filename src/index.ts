@@ -1,46 +1,40 @@
-import { EpochUnit, isDate, toDate } from "@chriscdn/to-date";
+import { EpochUnit, isDate, toDate, toDateOrThrow } from "@chriscdn/to-date";
 import { Memoize } from "@chriscdn/memoize";
 import { fetchPreset, FormatDatePreset } from "./presets";
 import {
   convertToUnit,
-  DAY,
   fetchFormatter,
   fetchRelativeFormatter,
-  HOUR,
-  MINUTE,
-  MONTH,
   resolveLocale,
   startOfDay,
-  WEEK,
-  YEAR,
+  TimeInSeconds,
 } from "./utils";
 
-export type DateRepresentation = Parameters<typeof toDate>[0];
-export type DateRepresentationNull = DateRepresentation | undefined | null;
-export { FormatDatePreset } from "./presets";
+type DateInput = string | number | Date | undefined | null;
 
-export type FormatDateOptions = {
+type FormatDateOptions = {
   locale?: string;
   preset?: FormatDatePreset;
   formatOptions?: Intl.DateTimeFormatOptions;
   epochUnit?: EpochUnit;
 };
 
-export type FormatDateRangeOptions = {
+type FormatDateRangeOptions = {
   locale?: string;
   formatOptions?: Intl.DateTimeFormatOptions;
   epochUnit?: EpochUnit;
 };
 
-export type FormatDateRelativeOptions = {
+type FormatDateRelativeOptions = {
   locale?: string;
   formatOptions?: Intl.RelativeTimeFormatOptions;
   unit?: Intl.RelativeTimeFormatUnit;
   epochUnit?: EpochUnit;
+  relativeTo?: DateInput;
 };
 
 const formatDate = Memoize(
-  (value: DateRepresentationNull, options: FormatDateOptions = {}) => {
+  (value: DateInput, options: FormatDateOptions = {}) => {
     const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
     const date = toDate(value, epochUnit);
 
@@ -68,7 +62,7 @@ const formatDate = Memoize(
 
 const formatDateYYYYMMDD = Memoize(
   (
-    value: DateRepresentationNull,
+    value: DateInput,
     timeZone?: Intl.DateTimeFormatOptions["timeZone"],
   ) => {
     const date = toDate(value);
@@ -106,7 +100,7 @@ const formatDateYYYYMMDD = Memoize(
 
 const formatDateYYYYMMDDTHHMMSS = Memoize(
   (
-    value: DateRepresentationNull,
+    value: DateInput,
     timeZone?: Intl.DateTimeFormatOptions["timeZone"],
   ) => {
     const date = toDate(value);
@@ -147,8 +141,8 @@ const formatDateYYYYMMDDTHHMMSS = Memoize(
 
 const formatDateRange = Memoize(
   (
-    start: DateRepresentationNull,
-    end: DateRepresentationNull,
+    start: DateInput,
+    end: DateInput,
     options: FormatDateRangeOptions = {},
   ) => {
     const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
@@ -175,40 +169,43 @@ const formatDateRange = Memoize(
 );
 
 const formatDateRelative = (
-  value: DateRepresentationNull,
+  value: DateInput,
   options: FormatDateRelativeOptions = {},
-  _now: DateRepresentationNull = undefined,
 ) => {
   // We cannot Memoize this function since "now" isn't fixed.
 
   const epochUnit = options.epochUnit ?? EpochUnit.BESTGUESS;
 
   const date = toDate(value, epochUnit);
-  const now = toDate(_now, epochUnit) ?? new Date();
+  const relativeTo = options.relativeTo
+    ? toDateOrThrow(options.relativeTo, epochUnit)
+    : new Date();
 
-  if (isDate(date) && isDate(now)) {
+  if (isDate(date) && isDate(relativeTo)) {
     const locale = resolveLocale(options.locale);
 
     const formatOptions = options.formatOptions ?? {};
 
-    const diffInSeconds = Math.round((date.getTime() - now.getTime()) / 1000);
+    const diffInSeconds = Math.round(
+      (date.getTime() - relativeTo.getTime()) / 1000,
+    );
     const absDiff = Math.abs(diffInSeconds);
 
     let unit!: Intl.RelativeTimeFormatUnit;
 
     if (options.unit) {
       unit = options.unit;
-    } else if (absDiff < MINUTE) {
+    } else if (absDiff < TimeInSeconds.MINUTE) {
       unit = "second";
-    } else if (absDiff < HOUR) {
+    } else if (absDiff < TimeInSeconds.HOUR) {
       unit = "minute";
-    } else if (absDiff < DAY) {
+    } else if (absDiff < TimeInSeconds.DAY) {
       unit = "hour";
-    } else if (absDiff < 2 * WEEK) {
+    } else if (absDiff < 2 * TimeInSeconds.WEEK) {
       unit = "day";
-    } else if (absDiff < 2 * MONTH) {
+    } else if (absDiff < 2 * TimeInSeconds.MONTH) {
       unit = "week";
-    } else if (absDiff < YEAR) {
+    } else if (absDiff < TimeInSeconds.YEAR) {
       unit = "month";
     } else {
       unit = "year";
@@ -218,9 +215,9 @@ const formatDateRelative = (
     // to be in units of whole days. This will ensure our relative date is
     // respective of calendar days and not units of 24hrs.
 
-    const resolvedDiffInSeconds = absDiff > DAY
+    const resolvedDiffInSeconds = absDiff > TimeInSeconds.DAY
       ? Math.round(
-        (startOfDay(date).getTime() - startOfDay(now).getTime()) / 1000,
+        (startOfDay(date).getTime() - startOfDay(relativeTo).getTime()) / 1000,
       )
       : diffInSeconds;
 
@@ -236,8 +233,12 @@ const formatDateRelative = (
 
 export {
   formatDate,
+  type FormatDateOptions,
+  FormatDatePreset,
   formatDateRange,
+  type FormatDateRangeOptions,
   formatDateRelative,
+  type FormatDateRelativeOptions,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
 };

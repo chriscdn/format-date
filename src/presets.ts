@@ -1,4 +1,4 @@
-export enum FormatDatePreset {
+enum FormatDatePreset {
   None,
   DateTime,
   DateTimeMedium,
@@ -8,7 +8,7 @@ export enum FormatDatePreset {
   DateShort,
 }
 
-export const fetchPreset = (
+const fetchPreset = (
   preset: FormatDatePreset,
 ): Intl.DateTimeFormatOptions => {
   switch (preset) {
@@ -70,3 +70,5 @@ export const fetchPreset = (
       };
   }
 };
+
+export { fetchPreset, FormatDatePreset };

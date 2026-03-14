@@ -1,5 +1,5 @@
 import * as quick_lru from 'quick-lru';
-import { toDate, EpochUnit } from '@chriscdn/to-date';
+import { EpochUnit } from '@chriscdn/to-date';
 
 declare enum FormatDatePreset {
     None = 0,
@@ -11,9 +11,7 @@ declare enum FormatDatePreset {
     DateShort = 6
 }
 
-type DateRepresentation = Parameters<typeof toDate>[0];
-type DateRepresentationNull = DateRepresentation | undefined | null;
-
+type DateInput = string | number | Date | undefined | null;
 type FormatDateOptions = {
     locale?: string;
     preset?: FormatDatePreset;
@@ -30,23 +28,24 @@ type FormatDateRelativeOptions = {
     formatOptions?: Intl.RelativeTimeFormatOptions;
     unit?: Intl.RelativeTimeFormatUnit;
     epochUnit?: EpochUnit;
+    relativeTo?: DateInput;
 };
 declare const formatDate: {
-    (value: DateRepresentationNull, options?: FormatDateOptions | undefined): string | null;
+    (value: DateInput, options?: FormatDateOptions | undefined): string | null;
     cache: quick_lru.default<string, string | null>;
 };
 declare const formatDateYYYYMMDD: {
-    (value: DateRepresentationNull, timeZone?: string | undefined): string | null;
+    (value: DateInput, timeZone?: string | undefined): string | null;
     cache: quick_lru.default<string, string | null>;
 };
 declare const formatDateYYYYMMDDTHHMMSS: {
-    (value: DateRepresentationNull, timeZone?: string | undefined): string | null;
+    (value: DateInput, timeZone?: string | undefined): string | null;
     cache: quick_lru.default<string, string | null>;
 };
 declare const formatDateRange: {
-    (start: DateRepresentationNull, end: DateRepresentationNull, options?: FormatDateRangeOptions | undefined): string | null;
+    (start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): string | null;
     cache: quick_lru.default<string, string | null>;
 };
-declare const formatDateRelative: (value: DateRepresentationNull, options?: FormatDateRelativeOptions, _now?: DateRepresentationNull) => string | null;
+declare const formatDateRelative: (value: DateInput, options?: FormatDateRelativeOptions) => string | null;
 
-export { type DateRepresentation, type DateRepresentationNull, type FormatDateOptions, FormatDatePreset, type FormatDateRangeOptions, type FormatDateRelativeOptions, formatDate, formatDateRange, formatDateRelative, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS };
+export { type FormatDateOptions, FormatDatePreset, type FormatDateRangeOptions, type FormatDateRelativeOptions, formatDate, formatDateRange, formatDateRelative, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS };

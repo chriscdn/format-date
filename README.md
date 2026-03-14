@@ -196,6 +196,7 @@ const options: FormatDateRelativeOptions = {
   unit: undefined,
   epochUnit: EpochUnit.BESTGUESS,
   formatOptions: {},
+  relativeTo: unknown,
 };
 
 const formattedDate = formatDateRelative(sampleDate, options);
@@ -209,6 +210,7 @@ const formattedDate = formatDateRelative(sampleDate, options);
   - `EpochUnit.MILLISECONDS`
   - `EpochUnit.MICROSECONDS`
 - **`formatOptions`**: Additional options for the underlying `Intl.RelativeTimeFormat` constructor. See the [RelativeTimeFormat parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#parameters) documentation for options.
+- **`relativeTo`** Format the date relative to this date, or the current date and time if not specified. Throws an error if the value cannot be converted to a `Date` object.
 
 ## License
 

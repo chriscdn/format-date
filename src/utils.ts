@@ -1,15 +1,15 @@
 import { Memoize } from "@chriscdn/memoize";
 
-const SECOND = 1;
-const MINUTE = 60 * SECOND;
-const HOUR = 60 * MINUTE;
-const DAY = 24 * HOUR;
-const WEEK = 7 * DAY;
-const YEAR = 365 * DAY; // Approximate
-
-// this happens to have no remainder.
-const MONTH = YEAR / 12;
-const QUARTER = YEAR / 4;
+const TimeInSeconds = {
+  SECOND: 1,
+  MINUTE: 60,
+  HOUR: 60 * 60,
+  DAY: 24 * 60 * 60,
+  WEEK: 7 * 24 * 60 * 60,
+  YEAR: 365 * 24 * 60 * 60, // approximate
+  MONTH: (365 * 24 * 60 * 60) / 12, // approximate
+  QUARTER: (365 * 24 * 60 * 60) / 4, // approximate
+} as const;
 
 const _round = (num: number, significantDigits: number) => {
   const factor = 10 ** significantDigits;
@@ -26,25 +26,25 @@ const convertToUnit = (seconds: number, unit: Intl.RelativeTimeFormatUnit) => {
   switch (unit) {
     case "year":
     case "years":
-      return _round(seconds / YEAR, 1);
+      return _round(seconds / TimeInSeconds.YEAR, 1);
     case "quarter":
     case "quarters":
-      return Math.round(seconds / QUARTER);
+      return Math.round(seconds / TimeInSeconds.QUARTER);
     case "month":
     case "months":
-      return Math.round(seconds / MONTH);
+      return Math.round(seconds / TimeInSeconds.MONTH);
     case "week":
     case "weeks":
-      return Math.round(seconds / WEEK);
+      return Math.round(seconds / TimeInSeconds.WEEK);
     case "day":
     case "days":
-      return Math.round(seconds / DAY);
+      return Math.round(seconds / TimeInSeconds.DAY);
     case "hour":
     case "hours":
-      return Math.round(seconds / HOUR);
+      return Math.round(seconds / TimeInSeconds.HOUR);
     case "minute":
     case "minutes":
-      return Math.round(seconds / MINUTE);
+      return Math.round(seconds / TimeInSeconds.MINUTE);
     case "second":
     case "seconds":
       return seconds;
@@ -67,15 +67,9 @@ const resolveLocale = (locale: string | undefined) => locale?.replace("_", "-");
 
 export {
   convertToUnit,
-  DAY,
   fetchFormatter,
   fetchRelativeFormatter,
-  HOUR,
-  MINUTE,
-  MONTH,
   resolveLocale,
-  SECOND,
   startOfDay,
-  WEEK,
-  YEAR,
+  TimeInSeconds,
 };
