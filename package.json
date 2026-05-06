@@ -16,13 +16,13 @@
   },
   "dependencies": {
     "@chriscdn/memoize": "^2.0.0",
-    "@chriscdn/to-date": "^2.0.1"
+    "@chriscdn/to-date": "^2.0.2"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.5"
   },
   "keywords": [
     "dateformat"
