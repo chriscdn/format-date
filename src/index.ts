@@ -144,7 +144,7 @@ const formatDateYYYYMMDDTHHMMSS = Memoize(
       const minutes = parts.find((part) => part.type === "minute")!.value;
       const seconds = parts.find((part) => part.type === "second")!.value;
 
-      // Return the formatted date in the form "YYYY-MM-DDTHH:MM:SS"
+      // Return the date in the form "YYYY-MM-DDTHH:MM:SS"
       return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     } else {
       return null;

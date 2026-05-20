@@ -8,9 +8,7 @@ enum FormatDatePreset {
   DateShort,
 }
 
-const fetchPreset = (
-  preset: FormatDatePreset,
-): Intl.DateTimeFormatOptions => {
+const fetchPreset = (preset: FormatDatePreset): Intl.DateTimeFormatOptions => {
   switch (preset) {
     case FormatDatePreset.None:
       return {};

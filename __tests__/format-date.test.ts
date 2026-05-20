@@ -7,7 +7,7 @@ import {
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
 } from "../lib";
-import { toDate, toDateUTC } from "@chriscdn/to-date";
+import { toDate, toDateInTimeZone, toDateUTC } from "@chriscdn/to-date";
 
 describe("Date Formatting of numbers", () => {
   const inSeconds = 1732565892;
@@ -300,6 +300,14 @@ describe("YYYY-MM-DDTHH:MM:SS", () => {
       "2025-02-12T15:00:00",
     );
   });
+  it("Simple 3", () => {
+    expect(
+      formatDateYYYYMMDDTHHMMSS(
+        toDateInTimeZone("2025-02-12T15:00:00", "UTC"),
+        "UTC",
+      ),
+    ).toBe("2025-02-12T15:00:00");
+  });
 });
 
 describe("Caching", () => {
@@ -323,7 +331,7 @@ describe("Edge Cases", () => {
     expect(dformatted).toBe("0002-02-01");
   });
 
-  it("EdgeCAse2", () => {
+  it("EdgeCase2", () => {
     const pDate = toDateUTC(dformatted);
     const pdDate = formatDateYYYYMMDD(pDate, "UTC");
     expect(pdDate).toBe("0002-02-01");

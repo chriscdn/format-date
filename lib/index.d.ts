@@ -1,4 +1,3 @@
-import * as quick_lru from 'quick-lru';
 import { EpochUnit } from '@chriscdn/to-date';
 
 declare enum FormatDatePreset {
@@ -39,7 +38,23 @@ type FormatDateRelativeOptions = {
  */
 declare const formatDate: {
     (value: DateInput, options?: FormatDateOptions | undefined): string | null;
-    cache: quick_lru.default<string, string | null>;
+    cache: {
+        readonly maxSize: number;
+        readonly maxAge: number;
+        clear: () => void;
+        delete: (key: string) => boolean;
+        evict: (count?: number) => void;
+        expiresIn: (key: string) => number | undefined;
+        get: (key: string) => string | null | undefined;
+        has: (key: string) => boolean;
+        peek: (key: string) => string | null | undefined;
+        resize: (maxSize: number) => void;
+        readonly size: number;
+    };
+    clear(): void;
+    delete(value: DateInput, options?: FormatDateOptions | undefined): boolean;
+    expiresIn(value: DateInput, options?: FormatDateOptions | undefined): number | undefined;
+    has(value: DateInput, options?: FormatDateOptions | undefined): boolean;
 };
 /**
  * Formats a date into a "YYYY-MM-DD" string format.
@@ -50,7 +65,23 @@ declare const formatDate: {
  */
 declare const formatDateYYYYMMDD: {
     (value: DateInput, timeZone?: string | undefined): string | null;
-    cache: quick_lru.default<string, string | null>;
+    cache: {
+        readonly maxSize: number;
+        readonly maxAge: number;
+        clear: () => void;
+        delete: (key: string) => boolean;
+        evict: (count?: number) => void;
+        expiresIn: (key: string) => number | undefined;
+        get: (key: string) => string | null | undefined;
+        has: (key: string) => boolean;
+        peek: (key: string) => string | null | undefined;
+        resize: (maxSize: number) => void;
+        readonly size: number;
+    };
+    clear(): void;
+    delete(value: DateInput, timeZone?: string | undefined): boolean;
+    expiresIn(value: DateInput, timeZone?: string | undefined): number | undefined;
+    has(value: DateInput, timeZone?: string | undefined): boolean;
 };
 /**
  * Formats a date into a "YYYY-MM-DDTHH:MM:SS" string format.
@@ -61,7 +92,23 @@ declare const formatDateYYYYMMDD: {
  */
 declare const formatDateYYYYMMDDTHHMMSS: {
     (value: DateInput, timeZone?: string | undefined): string | null;
-    cache: quick_lru.default<string, string | null>;
+    cache: {
+        readonly maxSize: number;
+        readonly maxAge: number;
+        clear: () => void;
+        delete: (key: string) => boolean;
+        evict: (count?: number) => void;
+        expiresIn: (key: string) => number | undefined;
+        get: (key: string) => string | null | undefined;
+        has: (key: string) => boolean;
+        peek: (key: string) => string | null | undefined;
+        resize: (maxSize: number) => void;
+        readonly size: number;
+    };
+    clear(): void;
+    delete(value: DateInput, timeZone?: string | undefined): boolean;
+    expiresIn(value: DateInput, timeZone?: string | undefined): number | undefined;
+    has(value: DateInput, timeZone?: string | undefined): boolean;
 };
 /**
  * Formats a range between two dates into a localized string.
@@ -73,7 +120,23 @@ declare const formatDateYYYYMMDDTHHMMSS: {
  */
 declare const formatDateRange: {
     (start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): string | null;
-    cache: quick_lru.default<string, string | null>;
+    cache: {
+        readonly maxSize: number;
+        readonly maxAge: number;
+        clear: () => void;
+        delete: (key: string) => boolean;
+        evict: (count?: number) => void;
+        expiresIn: (key: string) => number | undefined;
+        get: (key: string) => string | null | undefined;
+        has: (key: string) => boolean;
+        peek: (key: string) => string | null | undefined;
+        resize: (maxSize: number) => void;
+        readonly size: number;
+    };
+    clear(): void;
+    delete(start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): boolean;
+    expiresIn(start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): number | undefined;
+    has(start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): boolean;
 };
 /**
  * Formats a date relative to another date (defaults to now) in a human-readable way.
