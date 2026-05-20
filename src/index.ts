@@ -177,8 +177,9 @@ const formatDateRange = Memoize(
         ...formatOptions,
       });
 
-      // @ts-ignore Seems to be a TS error here for whatever reason.
-      return formatter.formatRange(startDate, endDate);
+      // node uses some "thing" spacing characters, which we don't want. normalize
+      // to be consistent
+      return formatter.formatRange(startDate, endDate).replace(/\s/g, " ");
     } else {
       return null;
     }

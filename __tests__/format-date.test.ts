@@ -6,7 +6,7 @@ import {
   formatDateRelative,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
-} from "../lib";
+} from "../src";
 import { toDate, toDateInTimeZone, toDateUTC } from "@chriscdn/to-date";
 
 describe("Date Formatting of numbers", () => {
@@ -67,7 +67,8 @@ describe("Date Ranges", () => {
   // omitting the time means UTC
   const start = toDate("2025-02-09")!;
   const end = toDate("2025-02-13")!;
-  const toBe = "February 9 – 13, 2025";
+  // const toBe = "February 9 – 13, 2025";
+  const toBe = "February 9 – 13, 2025";
 
   const locale = "en";
 
