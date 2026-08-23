@@ -212,8 +212,9 @@ const formatDateRelative = (
     const formatOptions = options.formatOptions ?? {};
 
     const diffInSeconds = Math.round(
-      (date.getTime() - relativeTo.getTime()) / 1000,
+      (date.getTime() - relativeTo.getTime()) / 1_000,
     );
+
     const absDiff = Math.abs(diffInSeconds);
 
     let unit!: Intl.RelativeTimeFormatUnit;
@@ -268,4 +269,8 @@ export {
   type FormatDateRelativeOptions,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
+  EpochUnit,
+  isDate,
+  toDate,
+  toDateOrThrow,
 };

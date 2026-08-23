@@ -1,33 +1,34 @@
-import { EpochUnit } from '@chriscdn/to-date';
-
+import { EpochUnit, isDate, toDate, toDateOrThrow } from "@chriscdn/to-date";
+//#region src/presets.d.ts
 declare enum FormatDatePreset {
-    None = 0,
-    DateTime = 1,
-    DateTimeMedium = 2,
-    DateTimeShort = 3,
-    Date = 4,
-    DateMedium = 5,
-    DateShort = 6
+  None = 0,
+  DateTime = 1,
+  DateTimeMedium = 2,
+  DateTimeShort = 3,
+  Date = 4,
+  DateMedium = 5,
+  DateShort = 6
 }
-
+//#endregion
+//#region src/index.d.ts
 type DateInput = string | number | Date | undefined | null;
 type FormatDateOptions = {
-    locale?: string;
-    preset?: FormatDatePreset;
-    formatOptions?: Intl.DateTimeFormatOptions;
-    epochUnit?: EpochUnit;
+  locale?: string;
+  preset?: FormatDatePreset;
+  formatOptions?: Intl.DateTimeFormatOptions;
+  epochUnit?: EpochUnit;
 };
 type FormatDateRangeOptions = {
-    locale?: string;
-    formatOptions?: Intl.DateTimeFormatOptions;
-    epochUnit?: EpochUnit;
+  locale?: string;
+  formatOptions?: Intl.DateTimeFormatOptions;
+  epochUnit?: EpochUnit;
 };
 type FormatDateRelativeOptions = {
-    locale?: string;
-    formatOptions?: Intl.RelativeTimeFormatOptions;
-    unit?: Intl.RelativeTimeFormatUnit;
-    epochUnit?: EpochUnit;
-    relativeTo?: DateInput;
+  locale?: string;
+  formatOptions?: Intl.RelativeTimeFormatOptions;
+  unit?: Intl.RelativeTimeFormatUnit;
+  epochUnit?: EpochUnit;
+  relativeTo?: DateInput;
 };
 /**
  * Formats a date into a localized string based on a preset or custom options.
@@ -37,24 +38,27 @@ type FormatDateRelativeOptions = {
  * @returns The formatted date string, or null if the input is invalid.
  */
 declare const formatDate: {
-    (value: DateInput, options?: FormatDateOptions | undefined): string | null;
-    cache: {
-        readonly maxSize: number;
-        readonly maxAge: number;
-        clear: () => void;
-        delete: (key: string) => boolean;
-        evict: (count?: number) => void;
-        expiresIn: (key: string) => number | undefined;
-        get: (key: string) => string | null | undefined;
-        has: (key: string) => boolean;
-        peek: (key: string) => string | null | undefined;
-        resize: (maxSize: number) => void;
-        readonly size: number;
-    };
-    clear(): void;
-    delete(value: DateInput, options?: FormatDateOptions | undefined): boolean;
-    expiresIn(value: DateInput, options?: FormatDateOptions | undefined): number | undefined;
-    has(value: DateInput, options?: FormatDateOptions | undefined): boolean;
+  (value: DateInput, options?: FormatDateOptions | undefined): string | null;
+  cache: {
+    get: (key: string) => string | null | undefined;
+    has: (key: string) => boolean;
+    peek: (key: string) => string | null | undefined;
+    delete: (key: string) => boolean;
+    clear: () => void;
+    expiresIn: (key: string) => number | undefined;
+    resize: (maxSize: number) => void;
+    readonly size: number;
+    readonly maxSize: number;
+    readonly maxAge: number;
+    evict: (count?: number) => void;
+  };
+  clear: () => void;
+  delete: (value: DateInput, options?: FormatDateOptions | undefined) => boolean;
+  expiresIn: (value: DateInput, options?: FormatDateOptions | undefined) => number | undefined;
+  has: (value: DateInput, options?: FormatDateOptions | undefined) => boolean;
+  set: (args: [value: DateInput, options?: FormatDateOptions | undefined], value: string | null, options?: {
+    maxAge: number;
+  }) => void;
 };
 /**
  * Formats a date into a "YYYY-MM-DD" string format.
@@ -64,24 +68,27 @@ declare const formatDate: {
  * @returns A string in YYYY-MM-DD format, or null if the input is invalid.
  */
 declare const formatDateYYYYMMDD: {
-    (value: DateInput, timeZone?: string | undefined): string | null;
-    cache: {
-        readonly maxSize: number;
-        readonly maxAge: number;
-        clear: () => void;
-        delete: (key: string) => boolean;
-        evict: (count?: number) => void;
-        expiresIn: (key: string) => number | undefined;
-        get: (key: string) => string | null | undefined;
-        has: (key: string) => boolean;
-        peek: (key: string) => string | null | undefined;
-        resize: (maxSize: number) => void;
-        readonly size: number;
-    };
-    clear(): void;
-    delete(value: DateInput, timeZone?: string | undefined): boolean;
-    expiresIn(value: DateInput, timeZone?: string | undefined): number | undefined;
-    has(value: DateInput, timeZone?: string | undefined): boolean;
+  (value: DateInput, timeZone?: string | undefined): string | null;
+  cache: {
+    get: (key: string) => string | null | undefined;
+    has: (key: string) => boolean;
+    peek: (key: string) => string | null | undefined;
+    delete: (key: string) => boolean;
+    clear: () => void;
+    expiresIn: (key: string) => number | undefined;
+    resize: (maxSize: number) => void;
+    readonly size: number;
+    readonly maxSize: number;
+    readonly maxAge: number;
+    evict: (count?: number) => void;
+  };
+  clear: () => void;
+  delete: (value: DateInput, timeZone?: string | undefined) => boolean;
+  expiresIn: (value: DateInput, timeZone?: string | undefined) => number | undefined;
+  has: (value: DateInput, timeZone?: string | undefined) => boolean;
+  set: (args: [value: DateInput, timeZone?: string | undefined], value: string | null, options?: {
+    maxAge: number;
+  }) => void;
 };
 /**
  * Formats a date into a "YYYY-MM-DDTHH:MM:SS" string format.
@@ -91,24 +98,27 @@ declare const formatDateYYYYMMDD: {
  * @returns A string in YYYY-MM-DDTHH:MM:SS format, or null if the input is invalid.
  */
 declare const formatDateYYYYMMDDTHHMMSS: {
-    (value: DateInput, timeZone?: string | undefined): string | null;
-    cache: {
-        readonly maxSize: number;
-        readonly maxAge: number;
-        clear: () => void;
-        delete: (key: string) => boolean;
-        evict: (count?: number) => void;
-        expiresIn: (key: string) => number | undefined;
-        get: (key: string) => string | null | undefined;
-        has: (key: string) => boolean;
-        peek: (key: string) => string | null | undefined;
-        resize: (maxSize: number) => void;
-        readonly size: number;
-    };
-    clear(): void;
-    delete(value: DateInput, timeZone?: string | undefined): boolean;
-    expiresIn(value: DateInput, timeZone?: string | undefined): number | undefined;
-    has(value: DateInput, timeZone?: string | undefined): boolean;
+  (value: DateInput, timeZone?: string | undefined): string | null;
+  cache: {
+    get: (key: string) => string | null | undefined;
+    has: (key: string) => boolean;
+    peek: (key: string) => string | null | undefined;
+    delete: (key: string) => boolean;
+    clear: () => void;
+    expiresIn: (key: string) => number | undefined;
+    resize: (maxSize: number) => void;
+    readonly size: number;
+    readonly maxSize: number;
+    readonly maxAge: number;
+    evict: (count?: number) => void;
+  };
+  clear: () => void;
+  delete: (value: DateInput, timeZone?: string | undefined) => boolean;
+  expiresIn: (value: DateInput, timeZone?: string | undefined) => number | undefined;
+  has: (value: DateInput, timeZone?: string | undefined) => boolean;
+  set: (args: [value: DateInput, timeZone?: string | undefined], value: string | null, options?: {
+    maxAge: number;
+  }) => void;
 };
 /**
  * Formats a range between two dates into a localized string.
@@ -119,24 +129,27 @@ declare const formatDateYYYYMMDDTHHMMSS: {
  * @returns A formatted range string (e.g., "Jan 1 – 5, 2024"), or null if inputs are invalid.
  */
 declare const formatDateRange: {
-    (start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): string | null;
-    cache: {
-        readonly maxSize: number;
-        readonly maxAge: number;
-        clear: () => void;
-        delete: (key: string) => boolean;
-        evict: (count?: number) => void;
-        expiresIn: (key: string) => number | undefined;
-        get: (key: string) => string | null | undefined;
-        has: (key: string) => boolean;
-        peek: (key: string) => string | null | undefined;
-        resize: (maxSize: number) => void;
-        readonly size: number;
-    };
-    clear(): void;
-    delete(start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): boolean;
-    expiresIn(start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): number | undefined;
-    has(start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): boolean;
+  (start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined): string | null;
+  cache: {
+    get: (key: string) => string | null | undefined;
+    has: (key: string) => boolean;
+    peek: (key: string) => string | null | undefined;
+    delete: (key: string) => boolean;
+    clear: () => void;
+    expiresIn: (key: string) => number | undefined;
+    resize: (maxSize: number) => void;
+    readonly size: number;
+    readonly maxSize: number;
+    readonly maxAge: number;
+    evict: (count?: number) => void;
+  };
+  clear: () => void;
+  delete: (start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined) => boolean;
+  expiresIn: (start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined) => number | undefined;
+  has: (start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined) => boolean;
+  set: (args: [start: DateInput, end: DateInput, options?: FormatDateRangeOptions | undefined], value: string | null, options?: {
+    maxAge: number;
+  }) => void;
 };
 /**
  * Formats a date relative to another date (defaults to now) in a human-readable way.
@@ -146,5 +159,6 @@ declare const formatDateRange: {
  * @returns A relative string (e.g., "2 days ago", "in 3 months"), or null if input is invalid.
  */
 declare const formatDateRelative: (value: DateInput, options?: FormatDateRelativeOptions) => string | null;
-
-export { type FormatDateOptions, FormatDatePreset, type FormatDateRangeOptions, type FormatDateRelativeOptions, formatDate, formatDateRange, formatDateRelative, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS };
+//#endregion
+export { EpochUnit, type FormatDateOptions, FormatDatePreset, type FormatDateRangeOptions, type FormatDateRelativeOptions, formatDate, formatDateRange, formatDateRelative, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, isDate, toDate, toDateOrThrow };
+//# sourceMappingURL=index.d.ts.map

@@ -6,23 +6,27 @@
   "author": "Christopher Meyer <chris@schwiiz.org>",
   "license": "MIT",
   "type": "module",
-  "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
-  "exports": "./lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsup",
-    "watch": "yarn build --watch",
+    "build": "tsdown",
+    "watch": "tsodown --watch",
     "test": "vitest"
   },
   "dependencies": {
-    "@chriscdn/memoize": "^2.0.2",
+    "@chriscdn/memoize": "^2.0.4",
     "@chriscdn/to-date": "^2.0.2"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
-    "tsup": "^8.5.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.5"
+    "tsdown": "^0.22.14",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.8"
   },
   "keywords": [
     "dateformat"

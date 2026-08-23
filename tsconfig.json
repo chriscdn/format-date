@@ -3,8 +3,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node"
-    // "esModuleInterop": true
+    "moduleResolution": "bundler"
   },
   "include": ["src"]
 }
