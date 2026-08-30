@@ -97,6 +97,17 @@ describe("Date Ranges", () => {
       }),
     ).toBe("February 11, 2025");
   });
+
+  it("Yearonly", () => {
+    expect(
+      formatDateRange("2025-02-11", "2026-02-11", {
+        locale,
+        formatOptions: {
+          year: "numeric",
+        },
+      }),
+    ).toBe("2025 – 2026");
+  });
 });
 
 describe("Date Relative", () => {

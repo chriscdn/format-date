@@ -1,7 +1,13 @@
-const localTime = "2026-01-01T23:30:00";
-import { formatDateYYYYMMDDTHHMMSS } from "../src";
-import { toDateUTC, toDate } from "@chriscdn/to-date";
+import { toDate, toDateOrThrow } from "@chriscdn/to-date";
 
-const z = formatDateYYYYMMDDTHHMMSS(toDate(localTime), "UTC");
+const fomatter = new Intl.DateTimeFormat("en", {
+  dateStyle: "long",
+  year: "numeric",
+});
+
+const d1 = toDateOrThrow("2024-05-03");
+const d2 = toDateOrThrow("2026-05-03");
+
+const z = fomatter.formatRange(d1, d2);
 
 console.log(z);

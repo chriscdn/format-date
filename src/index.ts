@@ -169,13 +169,10 @@ const formatDateRange = Memoize(
 
     if (isDate(startDate) && isDate(endDate)) {
       const locale = resolveLocale(options.locale);
-      const formatOptions = options.formatOptions ?? {};
+      const formatOptions = options.formatOptions ?? { dateStyle: "long" };
 
       // Opinionated default to {dateStyle: "long"}
-      const formatter = fetchFormatter(locale, {
-        dateStyle: "long",
-        ...formatOptions,
-      });
+      const formatter = fetchFormatter(locale, formatOptions);
 
       // node uses some "thing" spacing characters, which we don't want. normalize
       // to be consistent

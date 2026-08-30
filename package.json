@@ -19,7 +19,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@chriscdn/memoize": "^2.0.4",
+    "@chriscdn/memoize": "^3.0.0",
     "@chriscdn/to-date": "^2.0.2"
   },
   "devDependencies": {

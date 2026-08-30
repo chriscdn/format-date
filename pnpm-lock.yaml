@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@chriscdn/memoize':
-        specifier: ^2.0.4
-        version: 2.0.4
+        specifier: ^3.0.0
+        version: 3.0.0
       '@chriscdn/to-date':
         specifier: ^2.0.2
         version: 2.0.3
@@ -30,17 +30,17 @@ importers:
 
 packages:
 
-  '@chriscdn/memoize@2.0.4':
-    resolution: {integrity: sha512-n3b//yB5hBOZDbnJ4OREt+A1XJB+z9F9WRYX2bU0zGXw2C7BAVfB4VNEnO5C0MP/aixm1y33WRW0dyFBz9rOmg==}
-
-  '@chriscdn/promise-semaphore@4.0.0':
-    resolution: {integrity: sha512-vMFXvksQF3zy3e0r5hL8FUMhajcbSd7HJOcGI4CLYQgjd5znoqHIfzYCYVlw0mCYUjzqk5NTIp7mY7m+IB3+uQ==}
+  '@chriscdn/memoize@3.0.0':
+    resolution: {integrity: sha512-v3foDCDFYfIkWtjA3KQVgrkoxAGeLy/nEtKjmd06dEFWL3M35q58PqNBtXytY6zU34I18+gMyAeHlsebG/BVxg==}
 
   '@chriscdn/to-date@2.0.3':
     resolution: {integrity: sha512-qutoFd+Cxb8Un3pyMBUooxBK0wJvtoGPOlkT5u/ffR8jvhqe7tEyzworl0waldQATtQRajDpjidw0fR5eGL8Gg==}
 
   '@chriscdn/to-number@2.1.1':
     resolution: {integrity: sha512-ADuqSSs+Z6TSS9yXovk7ghiWAsFlEKU5w27TdQ0lDtaOgukkL+sz4x958ICfdoRKLyFNjX3VED/GqolSnBWzwg==}
+
+  '@chriscdn/type-guards@0.0.3':
+    resolution: {integrity: sha512-PxKEB7MXWfs+uIwOt6cIBXDXlohP/c4pC9hQslWbRmf5sUnn9SobvsCwvYlzNuR6wrR6YYt1oX6e5F+4tZ1xfA==}
 
   '@emnapi/core@1.10.0':
     resolution: {integrity: sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==}
@@ -1128,18 +1128,18 @@ packages:
 
 snapshots:
 
-  '@chriscdn/memoize@2.0.4':
+  '@chriscdn/memoize@3.0.0':
     dependencies:
-      '@chriscdn/promise-semaphore': 4.0.0
+      '@chriscdn/type-guards': 0.0.3
       quick-lru: 7.3.0
-
-  '@chriscdn/promise-semaphore@4.0.0': {}
 
   '@chriscdn/to-date@2.0.3':
     dependencies:
       '@chriscdn/to-number': 2.1.1
 
   '@chriscdn/to-number@2.1.1': {}
+
+  '@chriscdn/type-guards@0.0.3': {}
 
   '@emnapi/core@1.10.0':
     dependencies:
