@@ -11,6 +11,13 @@ const TimeInSeconds = {
   QUARTER: (365 * 24 * 60 * 60) / 4, // approximate
 } as const;
 
+/**
+ * This function can lead to rounding errors.
+ *
+ * @param num
+ * @param significantDigits
+ * @returns
+ */
 const _round = (num: number, significantDigits: number) => {
   const factor = 10 ** significantDigits;
   return Math.round(num * factor) / factor;
