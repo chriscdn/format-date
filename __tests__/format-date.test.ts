@@ -6,6 +6,7 @@ import {
   formatDateRelative,
   formatDateYYYYMMDD,
   formatDateYYYYMMDDTHHMMSS,
+  getMonthName,
 } from "../src";
 import { toDate, toDateInTimeZone, toDateUTC } from "@chriscdn/to-date";
 
@@ -356,5 +357,17 @@ describe("toDate TZ", () => {
     const dValue = toDateUTC(turnOfCentury);
     const formatted = formatDateYYYYMMDD(dValue, "UTC");
     expect(formatted).toBe("1900-01-01");
+  });
+});
+
+describe("getMonthName", () => {
+  it("February", () => {
+    expect(getMonthName(2)).toBe("February");
+  });
+  it("February", () => {
+    expect(getMonthName(2, "de_CH")).toBe("Februar");
+  });
+  it("March", () => {
+    expect(getMonthName(3, "fr")).toBe("mars");
   });
 });

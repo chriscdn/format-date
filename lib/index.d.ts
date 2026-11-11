@@ -1,5 +1,4 @@
 import { EpochUnit, isDate, toDate, toDateOrThrow } from "@chriscdn/to-date";
-//#region src/presets.d.ts
 declare enum FormatDatePreset {
   None = 0,
   DateTime = 1,
@@ -9,8 +8,6 @@ declare enum FormatDatePreset {
   DateMedium = 5,
   DateShort = 6
 }
-//#endregion
-//#region src/index.d.ts
 type DateInput = string | number | Date | undefined | null;
 type FormatDateOptions = {
   locale?: string;
@@ -159,6 +156,5 @@ declare const formatDateRange: {
  * @returns A relative string (e.g., "2 days ago", "in 3 months"), or null if input is invalid.
  */
 declare const formatDateRelative: (value: DateInput, options?: FormatDateRelativeOptions) => string | null;
-//#endregion
-export { EpochUnit, type FormatDateOptions, FormatDatePreset, type FormatDateRangeOptions, type FormatDateRelativeOptions, formatDate, formatDateRange, formatDateRelative, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, isDate, toDate, toDateOrThrow };
-//# sourceMappingURL=index.d.ts.map
+declare const getMonthName: (month: number, locale?: string | undefined) => string;
+export { EpochUnit, type FormatDateOptions, FormatDatePreset, type FormatDateRangeOptions, type FormatDateRelativeOptions, formatDate, formatDateRange, formatDateRelative, formatDateYYYYMMDD, formatDateYYYYMMDDTHHMMSS, getMonthName, isDate, toDate, toDateOrThrow };

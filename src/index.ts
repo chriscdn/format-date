@@ -256,6 +256,19 @@ const formatDateRelative = (
   }
 };
 
+const getMonthName = (
+  month: number,
+  locale: string | undefined = undefined,
+) => {
+  if (1 <= month && month <= 12) {
+    return fetchFormatter(resolveLocale(locale), {
+      month: "long",
+    }).format(new Date(2000, month - 1, 1));
+  } else {
+    throw new RangeError("Month must be between 1 and 12.");
+  }
+};
+
 export {
   formatDate,
   type FormatDateOptions,
@@ -270,4 +283,5 @@ export {
   isDate,
   toDate,
   toDateOrThrow,
+  getMonthName,
 };

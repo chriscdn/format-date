@@ -61,13 +61,21 @@ const convertToUnit = (seconds: number, unit: Intl.RelativeTimeFormatUnit) => {
 const fetchFormatter = Memoize(
   (locale: string | undefined, formatOptions: Intl.DateTimeFormatOptions) =>
     new Intl.DateTimeFormat(locale, formatOptions),
-  { maxSize: 20 },
+  {
+    maxSize: 20,
+    // 10 minutes
+    maxAge: 600_000,
+  },
 );
 
 const fetchRelativeFormatter = Memoize(
   (locale: string | undefined, formatOptions: Intl.RelativeTimeFormatOptions) =>
     new Intl.RelativeTimeFormat(locale, formatOptions),
-  { maxSize: 20 },
+  {
+    maxSize: 20,
+    // 10 minutes
+    maxAge: 600_000,
+  },
 );
 
 const resolveLocale = (locale: string | undefined) => locale?.replace("_", "-");

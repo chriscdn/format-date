@@ -14,12 +14,6 @@ Install via npm:
 npm install @chriscdn/format-date
 ```
 
-Or using yarn:
-
-```bash
-yarn add @chriscdn/format-date
-```
-
 ## Usage
 
 ### Importing
@@ -211,6 +205,22 @@ const formattedDate = formatDateRelative(sampleDate, options);
   - `EpochUnit.MICROSECONDS`
 - **`formatOptions`**: Additional options for the underlying `Intl.RelativeTimeFormat` constructor. See the [RelativeTimeFormat parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#parameters) documentation for options.
 - **`relativeTo`** Format the date relative to this date, or the current date and time if not specified. Throws an error if the value cannot be converted to a `Date` object.
+
+### Get Month Name
+
+The `getMonthName` function gets localized name of a month based on its numeric value and the specified locale.
+
+**Examples:**
+
+```ts
+import { getMonthName } from "@chriscdn/format-date";
+
+getMonthName(1);
+// January (defaults to system locale)
+
+getMonthName(2, "de");
+// Februar
+```
 
 ## License
 
